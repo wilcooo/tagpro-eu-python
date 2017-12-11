@@ -18,6 +18,12 @@ class JsonObject:
             if value is not None:
                 value = t(value)
 
+            if hasattr(t, 'is_list_of'):
+                for item in value:
+                    item.__parent__ = self
+            elif isinstance(value, JsonObject):
+                value.__parent__ = self
+
             setattr(self, f, value)
 
     @classmethod
@@ -89,8 +95,8 @@ class Player(JsonObject):
     def stats(self):
         if self.__stats__ is None:
             handler = PlayerStatCounter()
-            # TODO find match duration
-            parse_player(self.events, 0, self.team, handler=handler)
+            parse_player(self.events, self.__parent__.duration,
+                         self.team, handler=handler)
             self.__stats__ = handler
         return self.__stats__
 
@@ -111,8 +117,11 @@ class Team(JsonObject):
     def splats(self):
         if self.__splatlist__ is None:
             handler = SplatsSaver()
-            # TODO find correct size
-            parse_splats(self.__splats__, 0, 0, handler=handler)
+
+            width = self.__parent__.map.width
+            height = self.__parent__.map.height
+
+            parse_splats(self.__splats__, width, height, handler=handler)
             self.__splatlist__ = handler.splatlist
 
         return self.__splatlist__
@@ -121,6 +130,8 @@ class Team(JsonObject):
 def ListOf(t):
     def inner(objs):
         return list(map(t, objs))
+
+    inner.is_list_of = True
 
     return inner
 
