@@ -164,11 +164,13 @@ class Match(JsonObject):
         'teams': ListOf(Team),      # Array of team objects
     }
 
-    def create_timeline(self):
+    def create_timeline(self, sort=False):
         heap = []
 
         for player in self.players:
             handler = PlayerEventLogger(heap, player)
             player.parse_events(handler)
 
+        if sort:
+            return sorted(heap)
         return heap
