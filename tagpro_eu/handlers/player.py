@@ -1,5 +1,6 @@
 import heapq
 from tagpro_eu import constants
+from tagpro_eu.util import flag_name
 from tagpro_eu.util import format_powerups
 
 
@@ -15,7 +16,7 @@ class PlayerEventHandler:
     def duplicate_powerup(self, time, flag, powers, team): pass
     def powerdown(self, time, flag, power_down, new_powers, team): pass
     def return_(self, time, flag, powers, team): pass
-    def tag(self, time, old_flag, powers, team): pass
+    def tag(self, time, flag, powers, team): pass
     def drop(self, time, old_flag, powers, team): pass
     def pop(self, time, powers, team): pass
     def start_prevent(self, time, flag, powers, team): pass
@@ -195,11 +196,11 @@ class PlayerEventLogger(PlayerEventHandler):
 
     def grab(self, time, new_flag, powers, team):
         heapq.heappush(self.heap,
-            (time, f'Grab flag {new_flag}', self.player))
+            (time, f'Grab {flag_name(new_flag)}', self.player))
 
     def capture(self, time, old_flag, powers, team):
         heapq.heappush(self.heap,
-            (time, f'Capture flag {old_flag}', self.player))
+            (time, f'Capture {flag_name(old_flag)}', self.player))
 
     def flagless_capture(self, time, flag, powers, team):
         heapq.heappush(self.heap,
@@ -220,11 +221,12 @@ class PlayerEventLogger(PlayerEventHandler):
     def return_(self, time, flag, powers, team):
         heapq.heappush(self.heap, (time, 'Return', self.player))
 
-    def tag(self, time, old_flag, powers, team):
+    def tag(self, time, flag, powers, team):
         heapq.heappush(self.heap, (time, 'Tag', self.player))
 
     def drop(self, time, old_flag, powers, team):
-        heapq.heappush(self.heap, (time, 'Drop', self.player))
+        heapq.heappush(self.heap,
+            (time, f'Drop {flag_name(old_flag)}', self.player))
 
     def pop(self, time, powers, team):
         heapq.heappush(self.heap, (time, 'Pop', self.player))
