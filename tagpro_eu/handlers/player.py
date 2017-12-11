@@ -1,5 +1,6 @@
 import heapq
 from tagpro_eu import constants
+from tagpro_eu.util import format_powerups
 
 
 class PlayerEventHandler:
@@ -177,41 +178,40 @@ class PlayerEventLogger(PlayerEventHandler):
         self.player = player
 
     def join(self, time, new_team):
-        heapq.heappush(self.heap, (time, self.player, f'Join team {new_team}'))
+        heapq.heappush(self.heap,
+            (time, self.player, f'Join team {new_team}'))
         
     def quit(self, time, old_flag, old_powers, old_team):
         heapq.heappush(self.heap,
-            (time, f'Leave team {old_team} with flag {old_flag} and '
-                   f'powers {old_powers}', self.player))
+            (time, f'Leave team {old_team}', self.player))
 
     def switch(self, time, old_flag, powers, new_team):
         heapq.heappush(self.heap,
-            (time, f'Switch to team {new_team} with flag {old_flag} and '
-                   f'powers {powers}', self.player))
+            (time, f'Switch to team {new_team}', self.player))
 
     def grab(self, time, new_flag, powers, team):
         heapq.heappush(self.heap,
-                       (time, f'Grab flag {new_flag}', self.player))
+            (time, f'Grab flag {new_flag}', self.player))
 
     def capture(self, time, old_flag, powers, team):
         heapq.heappush(self.heap,
-                       (time, f'Capture flag {old_flag}', self.player))
+            (time, f'Capture flag {old_flag}', self.player))
 
     def flagless_capture(self, time, flag, powers, team):
         heapq.heappush(self.heap,
-                       (time, 'Capture marsball', self.player))
+            (time, 'Capture marsball', self.player))
 
     def powerup(self, time, flag, power_up, new_powers, team):
         heapq.heappush(self.heap,
-                       (time, f'Power up {power_up}', self.player))
+            (time, f'Power up {format_powerups(power_up)}', self.player))
 
     def duplicate_powerup(self, time, flag, powers, team):
         heapq.heappush(self.heap,
-                       (time, f'Grab duplicate powerup', self.player))
+            (time, f'Grab duplicate powerup', self.player))
 
     def powerdown(self, time, flag, power_down, new_powers, team):
         heapq.heappush(self.heap,
-                       (time, f'Power down {power_down}', self.player))
+            (time, f'Power down {format_powerups(power_down)}', self.player))
 
     def return_(self, time, flag, powers, team):
         heapq.heappush(self.heap, (time, 'Return', self.player))
