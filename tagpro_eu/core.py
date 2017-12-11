@@ -2,6 +2,8 @@ import datetime
 import json
 
 from tagpro_eu.blob import Blob
+from tagpro_eu.handlers.map import MapSaver
+from tagpro_eu.parsers import parse_map
 
 
 class JsonObject:
@@ -33,6 +35,33 @@ class Map(JsonObject):
         'width': int,
         'tiles': Blob,
     }
+
+    def __init__(self, data):
+        super(Map, self).__init__(data)
+
+        self.__tilemap__ = None
+        self.__height__ = None
+
+    @property
+    def tilemap(self):
+        if self.__tilemap__ is None:
+            self.parse_tiles()
+
+        return self.__tilemap__
+
+    @property
+    def height(self):
+        if self.__height__ is None:
+            self.parse_tiles()
+
+        return self.__height__
+
+    def parse_tiles(self):
+        handler = MapSaver()
+        parse_map(self.tiles, self.width, handler=handler)
+
+        self.__tilemap__ = handler.tiles
+        self.__height__ = len(self.__tilemap__)
 
 
 class Player(JsonObject):
