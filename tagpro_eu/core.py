@@ -96,14 +96,14 @@ class Player(JsonObject):
     def stats(self):
         if self.__stats__ is None:
             handler = PlayerStatCounter()
-            parse_player(self.events, self.__parent__.duration,
-                         self.team, handler=handler)
+            parse_player(self.events, self.team,
+                         self.__parent__.duration, handler=handler)
             self.__stats__ = handler
         return self.__stats__
 
     def parse_events(self, handler):
-        parse_player(self.events, self.__parent__.duration,
-                     self.team, handler=handler)
+        parse_player(self.events, self.team,
+                     self.__parent__.duration, handler=handler)
 
     def __lt__(self, other):
         """
