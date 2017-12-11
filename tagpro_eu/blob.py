@@ -48,7 +48,7 @@ class Blob:
         self.pos = 0
 
 
-def player_events(blob, team, duration, handler=None):
+def parse_player(blob, team, duration, handler=None):
     if handler is None:
         handler = PlayerEventHandler()
 
