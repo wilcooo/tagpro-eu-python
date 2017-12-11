@@ -1,9 +1,6 @@
 import datetime
 
-
-class Blob:
-    def __init__(self, x):
-        pass
+from blob import Blob
 
 
 class JsonObject:
