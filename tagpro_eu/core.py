@@ -100,6 +100,10 @@ class Player(JsonObject):
             self.__stats__ = handler
         return self.__stats__
 
+    def parse_events(self, handler):
+        parse_player(self.events, self.__parent__.duration,
+                     self.team, handler=handler)
+
 
 class Team(JsonObject):
     fields = {

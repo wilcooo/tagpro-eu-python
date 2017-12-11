@@ -25,7 +25,7 @@ The following are my minimum requirements for doing an initial release:
 - [x] Outputting a player timeline to the console
 - [x] Parsing of map BLOB
 - [x] Parsing of splat BLOB
-- [ ] Add parsing functions to JSON objects
+- [x] Add parsing functions to JSON objects
 - [ ] Add scoreboard formatter
 - [ ] Add game timeline formatter
 - [x] Allow reading objects from files
