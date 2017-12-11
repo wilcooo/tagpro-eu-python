@@ -6,7 +6,7 @@ def format_time(frames):
 
     m, s = divmod(frames, 60)
 
-    return f'{m:2>0}:{s:2>0}'
+    return f'{m:0>2}:{s:0>2}'
 
 
 def format_powerups(powerups):

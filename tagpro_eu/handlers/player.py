@@ -183,7 +183,7 @@ class PlayerEventLogger(PlayerEventHandler):
 
     def join(self, time, new_team):
         heapq.heappush(self.heap,
-            (time, self.player, f'Join team {self.get_team_name(new_team)}'))
+            (time, f'Join team {self.get_team_name(new_team)}', self.player))
         
     def quit(self, time, old_flag, old_powers, old_team):
         heapq.heappush(self.heap,

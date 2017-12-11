@@ -1,4 +1,5 @@
 import datetime
+import heapq
 import json
 
 from tagpro_eu.blob import Blob
@@ -9,6 +10,7 @@ from tagpro_eu.handlers.splats import SplatsSaver
 from tagpro_eu.parsers import parse_map
 from tagpro_eu.parsers import parse_player
 from tagpro_eu.parsers import parse_splats
+from tagpro_eu.util import format_time
 
 
 class JsonObject:
@@ -174,3 +176,10 @@ class Match(JsonObject):
         if sort:
             return sorted(heap)
         return heap
+
+    def print_timeline(self):
+        timeline = self.create_timeline()
+
+        while timeline:
+            time, event, player = heapq.heappop(timeline)
+            print(f'{format_time(time)} | {player.name:<12} | {event}')
