@@ -3,13 +3,15 @@ import json
 
 from tagpro_eu.blob import Blob
 from tagpro_eu.handlers.map import MapSaver
+from tagpro_eu.handlers.splats import SplatsSaver
 from tagpro_eu.parsers import parse_map
+from tagpro_eu.parsers import parse_splats
 
 
 class JsonObject:
     def __init__(self, data):
         for f, t in self.__class__.fields.items():
-            value = data.get(f, None)
+            value = data.get(f.strip('_'), None)
 
             if value is not None:
                 value = t(value)
@@ -81,8 +83,23 @@ class Team(JsonObject):
     fields = {
         'name': str,
         'score': int,
-        'splats': Blob
+        '__splats__': Blob
     }
+
+    def __init__(self, data):
+        super(Team, self).__init__(data)
+
+        self.__splatlist__ = None
+
+    @property
+    def splats(self):
+        if self.__splatlist__ is None:
+            handler = SplatsSaver()
+            # TODO find correct size
+            parse_splats(self.__splats__, 0, 0, handler=handler)
+            self.__splatlist__ = handler.splatlist
+
+        return self.__splatlist__
 
 
 def ListOf(t):
