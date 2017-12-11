@@ -3,8 +3,10 @@ import json
 
 from tagpro_eu.blob import Blob
 from tagpro_eu.handlers.map import MapSaver
+from tagpro_eu.handlers.player import PlayerStatCounter
 from tagpro_eu.handlers.splats import SplatsSaver
 from tagpro_eu.parsers import parse_map
+from tagpro_eu.parsers import parse_player
 from tagpro_eu.parsers import parse_splats
 
 
@@ -77,6 +79,20 @@ class Player(JsonObject):
         'team': int,    # at start of match; 1 = red, 2 = blue, 0 = join late
         'events': Blob,
     }
+
+    def __init__(self, data):
+        super(Player, self).__init__(data)
+
+        self.__stats__ = None
+
+    @property
+    def stats(self):
+        if self.__stats__ is None:
+            handler = PlayerStatCounter()
+            # TODO find match duration
+            parse_player(self.events, 0, self.team, handler=handler)
+            self.__stats__ = handler
+        return self.__stats__
 
 
 class Team(JsonObject):
