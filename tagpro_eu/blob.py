@@ -1,7 +1,7 @@
 import base64
 
-import constants
-from handlers import PlayerEventHandler
+from tagpro_eu import constants
+from tagpro_eu.handlers import PlayerEventHandler
 
 
 class Blob:

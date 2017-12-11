@@ -1,6 +1,6 @@
 import datetime
 
-from blob import Blob
+from tagpro_eu.blob import Blob
 
 
 class JsonObject:

@@ -1,4 +1,4 @@
-import constants
+from tagpro_eu import constants
 
 
 class PlayerEventHandler:
