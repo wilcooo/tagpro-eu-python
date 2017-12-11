@@ -3,6 +3,7 @@ import base64
 from tagpro_eu import constants
 from tagpro_eu.handlers.player import PlayerEventHandler
 from tagpro_eu.handlers.map import MapHandler
+from tagpro_eu.handlers.splats import SplatsHandler
 
 
 class Blob:
@@ -219,3 +220,46 @@ def parse_map(blob, width, handler=None):
             if x == width:
                 x = 0
                 y += 1
+
+
+def parse_splats(blob, width, height, handler=None):
+    def bits(size):
+        size *= 40
+        grid = size - 1
+        result = 32
+        if not (grid & 0xFFFF0000):
+            result -= 16
+            grid <<= 16
+        if not (grid & 0xFF000000):
+            result -= 8
+            grid <<= 8
+        if not (grid & 0xF0000000):
+            result -= 4
+            grid <<= 4
+        if not (grid & 0xC0000000):
+            result -= 2
+            grid <<= 2
+        if not (grid & 0x80000000):
+            result -= 1
+
+        return (result, ((1 << result) - size >> 1) + 20)
+
+    if handler is None:
+        handler = SplatsHandler()
+
+    x = bits(width)
+    y = bits(height)
+
+    index = 0
+
+    while not blob.end():
+        n = blob.read_tally()
+
+        if n > 0:
+            splats = []
+            for i in range(n):
+                splats.append((blob.read_fixed(x[0]) - x[1],
+                               blob.read_fixed(y[0]) - y[1]))
+            handler.splats(splats, index)
+
+        index += 1
