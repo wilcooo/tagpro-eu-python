@@ -58,6 +58,9 @@ class PlayerEvents(Blob):
         button = False
         block = False
 
+        if team:
+            handler.join(time, team)
+
         while not self.end():
             new_team = team
             if self.read_bool():
@@ -94,9 +97,8 @@ class PlayerEvents(Blob):
             pup = constants.NO_POWER
 
             for p in constants.POWERUPS:
-                if powers & p:
-                    if self.read_bool():
-                        pdown |= p
+                if powers & p and self.read_bool():
+                    pdown |= p
                 elif powerups and self.read_bool():
                     pup |= p
                     powerups -= 1
@@ -181,4 +183,4 @@ class PlayerEvents(Blob):
                 flag = constants.NO_FLAG
                 team = new_team
 
-            handler.end(duration, flag, powers, team)
+        handler.end(duration, flag, powers, team)
