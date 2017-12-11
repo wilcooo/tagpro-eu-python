@@ -35,7 +35,7 @@ class Map(JsonObject):
         'type': str,        # ctf, nf, mb etc., empty for unofficial maps
         'marsballs': int,   # number
         'width': int,
-        'tiles': Blob,
+        '__tiles__': Blob,
     }
 
     def __init__(self, data):
@@ -45,7 +45,7 @@ class Map(JsonObject):
         self.__height__ = None
 
     @property
-    def tilemap(self):
+    def tiles(self):
         if self.__tilemap__ is None:
             self.parse_tiles()
 
@@ -60,7 +60,7 @@ class Map(JsonObject):
 
     def parse_tiles(self):
         handler = MapSaver()
-        parse_map(self.tiles, self.width, handler=handler)
+        parse_map(self.__tiles__, self.width, handler=handler)
 
         self.__tilemap__ = handler.tiles
         self.__height__ = len(self.__tilemap__)
