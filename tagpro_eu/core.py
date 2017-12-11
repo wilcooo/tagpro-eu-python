@@ -4,6 +4,7 @@ import json
 from tagpro_eu.blob import Blob
 from tagpro_eu.handlers.map import MapSaver
 from tagpro_eu.handlers.player import PlayerStatCounter
+from tagpro_eu.handlers.player import PlayerEventLogger
 from tagpro_eu.handlers.splats import SplatsSaver
 from tagpro_eu.parsers import parse_map
 from tagpro_eu.parsers import parse_player
@@ -104,6 +105,13 @@ class Player(JsonObject):
         parse_player(self.events, self.__parent__.duration,
                      self.team, handler=handler)
 
+    def __lt__(self, other):
+        """
+        Necessary for building a heap of events.
+        This obviously does not actually work.
+        """
+        return False
+
 
 class Team(JsonObject):
     fields = {
@@ -155,3 +163,12 @@ class Match(JsonObject):
         'players': ListOf(Player),  # Array of player objects
         'teams': ListOf(Team),      # Array of team objects
     }
+
+    def create_timeline(self):
+        heap = []
+
+        for player in self.players:
+            handler = PlayerEventLogger(heap, player)
+            player.parse_events(handler)
+
+        return heap
