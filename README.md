@@ -28,7 +28,7 @@ The following are my minimum requirements for doing an initial release:
 - [ ] Add parsing functions to JSON objects
 - [ ] Add scoreboard formatter
 - [ ] Add game timeline formatter
-- [ ] Allow reading objects from files
+- [x] Allow reading objects from files
 - [ ] Allow downloading objects from tagpro.eu
 - [ ] Add proper documentation
 - [ ] Add examples

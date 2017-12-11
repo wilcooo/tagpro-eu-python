@@ -18,6 +18,11 @@ class JsonObject:
     def from_string(cls, s):
         return cls(json.loads(s))
 
+    @classmethod
+    def from_file(cls, filename):
+        with open(filename) as f:
+            return cls(json.load(f))
+
 
 class Map(JsonObject):
     fields = {
