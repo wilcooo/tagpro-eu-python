@@ -8,6 +8,8 @@ def parse_player(blob, team, duration, handler=None):
     if handler is None:
         handler = PlayerEventHandler()
 
+    blob.reset()
+
     time = 0
     flag = constants.NO_FLAG
     powers = constants.NO_POWER
@@ -147,6 +149,8 @@ def parse_map(blob, width, handler=None):
     if handler is None:
         handler = MapHandler()
 
+    blob.reset()
+
     x, y = 0, 0
 
     while not blob.end() or x > 0:
@@ -201,6 +205,8 @@ def parse_splats(blob, width, height, handler=None):
 
     if handler is None:
         handler = SplatsHandler()
+
+    blob.reset()
 
     x = bits(width)
     y = bits(height)
