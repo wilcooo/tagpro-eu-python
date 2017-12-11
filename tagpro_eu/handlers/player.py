@@ -170,7 +170,7 @@ class PlayerStatCounter(PlayerEventHandler):
             self.block_since = -1
 
 
-class PlayerEventLogger:
+class PlayerEventLogger(PlayerEventHandler):
     @staticmethod
     def log(time, msg):
         time //= 60
