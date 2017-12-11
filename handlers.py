@@ -168,3 +168,74 @@ class PlayerStatCounter(PlayerEventHandler):
         if self.block_since >= 0:
             self.block += time - self.block_since
             self.block_since = -1
+
+
+class PlayerEventLogger:
+    @staticmethod
+    def log(time, msg):
+        time //= 60
+        m, s = divmod(time, 60)
+
+        print(f'{m:0>2}:{s:0>2} | {msg}')
+
+    def join(self, time, new_team):
+        PlayerEventLogger.log(time, f'Join team {new_team}')
+        
+    def quit(self, time, old_flag, old_powers, old_team):
+        PlayerEventLogger.log(time, f'Leave team {old_team} with flag {old_flag} and '
+                  f'powers {old_powers}')
+
+    def switch(self, time, old_flag, powers, new_team):
+        PlayerEventLogger.log(time, f'Switch to team {new_team} with flag {old_flag} and '
+                  f'powers {powers}')
+
+    def grab(self, time, new_flag, powers, team):
+        PlayerEventLogger.log(time, f'Grab flag {new_flag}')
+
+    def capture(self, time, old_flag, powers, team):
+        PlayerEventLogger.log(time, f'Capture flag {old_flag}')
+
+    def flagless_capture(self, time, flag, powers, team):
+        PlayerEventLogger.log(time, 'Capture marsball')
+
+    def powerup(self, time, flag, power_up, new_powers, team):
+        PlayerEventLogger.log(time, f'Power up {power_up}')
+
+    def duplicate_powerup(self, time, flag, powers, team):
+        PlayerEventLogger.log(time, f'Grab duplicate powerup')
+
+    def powerdown(self, time, flag, power_down, new_powers, team):
+        PlayerEventLogger.log(time, f'Power down {power_down}')
+
+    def return_(self, time, flag, powers, team):
+        PlayerEventLogger.log(time, 'Return')
+
+    def tag(self, time, old_flag, powers, team):
+        PlayerEventLogger.log(time, 'Tag')
+
+    def drop(self, time, old_flag, powers, team):
+        PlayerEventLogger.log(time, 'Drop')
+
+    def pop(self, time, powers, team):
+        PlayerEventLogger.log(time, 'Pop')
+
+    def start_prevent(self, time, flag, powers, team):
+        PlayerEventLogger.log(time, 'Start preventing')
+
+    def stop_prevent(self, time, flag, powers, team):
+        PlayerEventLogger.log(time, 'Stop preventing')
+
+    def start_button(self, time, flag, powers, team):
+        PlayerEventLogger.log(time, 'Start buttoning')
+
+    def stop_button(self, time, flag, powers, team):
+        PlayerEventLogger.log(time, 'Stop buttoning')
+
+    def start_block(self, time, flag, powers, team):
+        PlayerEventLogger.log(time, 'Start blocking')
+
+    def stop_block(self, time, flag, powers, team):
+        PlayerEventLogger.log(time, 'Stop blocking')
+
+    def end(self, time, flag, powers, team):
+        PlayerEventLogger.log(time, 'Game ends')
