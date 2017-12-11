@@ -177,17 +177,21 @@ class PlayerEventLogger(PlayerEventHandler):
         self.heap = heap
         self.player = player
 
+    def get_team_name(self, team):
+        return self.player.__parent__.teams[team - 1].name
+
     def join(self, time, new_team):
         heapq.heappush(self.heap,
-            (time, self.player, f'Join team {new_team}'))
+            (time, self.player, f'Join team {self.get_team_name(new_team)}'))
         
     def quit(self, time, old_flag, old_powers, old_team):
         heapq.heappush(self.heap,
-            (time, f'Leave team {old_team}', self.player))
+            (time, f'Leave team {self.get_team_name(old_team)}', self.player))
 
     def switch(self, time, old_flag, powers, new_team):
         heapq.heappush(self.heap,
-            (time, f'Switch to team {new_team}', self.player))
+            (time, f'Switch to team {self.get_team_name(new_team)}',
+             self.player))
 
     def grab(self, time, new_flag, powers, team):
         heapq.heappush(self.heap,
