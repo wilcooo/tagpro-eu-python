@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from tagpro_eu.blob import Blob
 
@@ -12,6 +13,10 @@ class JsonObject:
                 value = t(value)
 
             setattr(self, f, value)
+
+    @classmethod
+    def from_string(cls, s):
+        return cls(json.loads(s))
 
 
 class Map(JsonObject):
