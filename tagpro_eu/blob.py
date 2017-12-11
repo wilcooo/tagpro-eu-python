@@ -2,6 +2,7 @@ import base64
 
 from tagpro_eu import constants
 from tagpro_eu.handlers.player import PlayerEventHandler
+from tagpro_eu.handlers.map import MapHandler
 
 
 class Blob:
@@ -184,3 +185,37 @@ def player_events(blob, team, duration, handler=None):
             team = new_team
 
     handler.end(duration, flag, powers, team)
+
+
+def parse_map(blob, width, handler=None):
+    if handler is None:
+        handler = MapHandler()
+
+    x, y = 0, 0
+
+    while not blob.end() or x > 0:
+        tile = blob.read_fixed(6)
+        if tile != constants.EMPTY_TILE:
+            # idk
+            if tile < 6:
+                tile += 9
+            elif tile < 13:
+                tile = (tile - 4) * 10
+            elif tile < 17:
+                tile += 77
+            elif tile < 20:
+                tile = (tile - 7) * 10
+            elif tile < 22:
+                tile += 110
+            else:
+                tile = (tile - 8) * 10
+
+        for i in range(blob.read_footer() + 1):
+            if x == 0:
+                handler.height(y)
+            handler.tile(x, y, tile)
+
+            x += 1
+            if x == width:
+                x = 0
+                y += 1
