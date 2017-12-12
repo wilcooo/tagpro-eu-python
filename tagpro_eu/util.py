@@ -2,11 +2,10 @@ from tagpro_eu import constants
 
 
 def format_time(frames):
-    frames //= 60
+    m, s = divmod(frames, 3600)
+    s /= 60
 
-    m, s = divmod(frames, 60)
-
-    return f'{m:0>2}:{s:0>2}'
+    return f'{m:0>2}:{s:0>5.2f}'
 
 
 def format_powerups(powerups):
