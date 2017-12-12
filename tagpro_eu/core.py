@@ -21,11 +21,11 @@ class JsonObject:
             if value is not None:
                 value = t(value)
 
-            if hasattr(t, 'is_list_of'):
+            if isinstance(value, JsonObject):
+                value.__parent__ = self
+            elif isinstance(value, list):
                 for item in value:
                     item.__parent__ = self
-            elif isinstance(value, JsonObject):
-                value.__parent__ = self
 
             setattr(self, f, value)
 
@@ -144,8 +144,6 @@ class Team(JsonObject):
 def ListOf(t):
     def inner(objs):
         return list(map(t, objs))
-
-    inner.is_list_of = True
 
     return inner
 
