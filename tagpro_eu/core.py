@@ -53,7 +53,6 @@ class Map(JsonObject):
         super(Map, self).__init__(data)
 
         self.__tilemap__ = None
-        self.__height__ = None
 
     @property
     def tiles(self):
@@ -64,17 +63,16 @@ class Map(JsonObject):
 
     @property
     def height(self):
-        if self.__height__ is None:
+        if self.__tilemap__ is None:
             self.parse_tiles()
 
-        return self.__height__
+        return len(self.__tilemap__)
 
     def parse_tiles(self):
         handler = MapSaver()
         parse_map(self.__tiles__, self.width, handler=handler)
 
         self.__tilemap__ = handler.tiles
-        self.__height__ = len(self.__tilemap__)
 
 
 class Player(JsonObject):
