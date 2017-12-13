@@ -14,9 +14,14 @@ from tagpro_eu.util import format_time
 
 
 class JsonObject:
-    def __init__(self, data):
-        for f, t in self.__class__.fields.items():
-            value = data.get(f.strip('_'), None)
+    def __init__(self, data, strict=False):
+        for f, t in self.fields.items():
+            try:
+                value = data[f.strip('_')]
+            except KeyError:
+                if strict:
+                    raise
+                value = None
 
             if value is not None:
                 value = t(value)
@@ -30,13 +35,13 @@ class JsonObject:
             setattr(self, f, value)
 
     @classmethod
-    def from_string(cls, s):
-        return cls(json.loads(s))
+    def from_string(cls, s, strict=False):
+        return cls(json.loads(s), strict=strict)
 
     @classmethod
-    def from_file(cls, filename):
+    def from_file(cls, filename, strict=False):
         with open(filename) as f:
-            return cls(json.load(f))
+            return cls(json.load(f), strict=strict)
 
 
 class Map(JsonObject):
