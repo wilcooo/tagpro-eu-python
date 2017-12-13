@@ -43,6 +43,9 @@ class JsonObject:
         with open(filename) as f:
             return cls(json.load(f), strict=strict)
 
+    def __repr__(self):
+        return 'JsonObject()'
+
 
 class Map(JsonObject):
     __fields__ = {
@@ -78,6 +81,9 @@ class Map(JsonObject):
         parse_map(self.__tiles__, self.width, handler=handler)
 
         self.__tilemap__ = handler.tiles
+
+    def __repr__(self):
+        return f'Map(name={self.name!r})'
 
 
 class Player(JsonObject):
@@ -116,6 +122,9 @@ class Player(JsonObject):
         """
         return False
 
+    def __repr__(self):
+        return f'Player(name={self.name!r})'
+
 
 class Team(JsonObject):
     __fields__ = {
@@ -141,6 +150,9 @@ class Team(JsonObject):
             self.__splatlist__ = handler.splatlist
 
         return self.__splatlist__
+
+    def __repr__(self):
+        return f'Team(name={self.name!r})'
 
 
 class ListOf:
@@ -184,3 +196,6 @@ class Match(JsonObject):
         while timeline:
             time, event, player = heapq.heappop(timeline)
             print(f'{format_time(time)} | {player.name:<12} | {event}')
+
+    def __repr__(self):
+        return f'Match(server={self.server!r}, port={self.port!r})'
