@@ -15,7 +15,7 @@ from tagpro_eu.util import format_time
 
 class JsonObject:
     def __init__(self, data, strict=False):
-        for f, t in self.fields.items():
+        for f, t in self.__fields__.items():
             try:
                 value = data[f.strip('_')]
             except KeyError:
@@ -45,7 +45,7 @@ class JsonObject:
 
 
 class Map(JsonObject):
-    fields = {
+    __fields__ = {
         'name': str,
         'author': str,
         'type': str,        # ctf, nf, mb etc., empty for unofficial maps
@@ -81,7 +81,7 @@ class Map(JsonObject):
 
 
 class Player(JsonObject):
-    fields = {
+    __fields__ = {
         'auth': bool,
         'name': str,
         'flair': int,   # index
@@ -101,8 +101,7 @@ class Player(JsonObject):
     def stats(self):
         if self.__stats__ is None:
             handler = PlayerStatCounter()
-            parse_player(self.events, self.team,
-                         self.__parent__.duration, handler=handler)
+            self.parse_events(handler)
             self.__stats__ = handler
         return self.__stats__
 
@@ -119,7 +118,7 @@ class Player(JsonObject):
 
 
 class Team(JsonObject):
-    fields = {
+    __fields__ = {
         'name': str,
         'score': int,
         '__splats__': Blob
@@ -144,15 +143,16 @@ class Team(JsonObject):
         return self.__splatlist__
 
 
-def ListOf(t):
-    def inner(objs):
-        return list(map(t, objs))
+class ListOf:
+    def __init__(self, t):
+        self.type = t
 
-    return inner
+    def __call__(self, data):
+        return list(map(self.type, data))
 
 
 class Match(JsonObject):
-    fields = {
+    __fields__ = {
         'server': str,              # Domain name of the game server
         'port': int,
         'official': bool,           # Played on an "official" server
