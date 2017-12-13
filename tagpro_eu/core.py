@@ -17,14 +17,11 @@ class JsonObject:
     def __init__(self, data, strict=False):
         for f, t in self.__fields__.items():
             try:
-                value = data[f.strip('_')]
-            except KeyError:
+                value = t(data[f.strip('_')])
+            except (KeyError, TypeError):
                 if strict:
                     raise
                 value = None
-
-            if value is not None:
-                value = t(value)
 
             if isinstance(value, JsonObject):
                 value.__parent__ = self
