@@ -43,6 +43,25 @@ class JsonObject:
     def __repr__(self):
         return 'JsonObject()'
 
+    def to_dict(self):
+        def f(x):
+            if isinstance(x, JsonObject):
+                return x.to_dict()
+            elif isinstance(x, list):
+                return list(map(JsonObject.to_dict, x))
+            elif isinstance(x, datetime.datetime):
+                return int(x.strftime('%s'))
+            elif isinstance(x, Blob):
+                return x.to_string()
+            else:
+                return x
+
+        return {field.strip('_'): f(getattr(self, field))
+                for field in self.__fields__}
+
+    def to_json(self):
+        return json.dumps(self.to_dict())
+
 
 class Map(JsonObject):
     __fields__ = {

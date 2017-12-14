@@ -42,3 +42,9 @@ class Blob:
 
     def reset(self):
         self.pos = 0
+
+    def __repr__(self):
+        return 'Blob()'
+
+    def to_string(self):
+        return base64.b64encode(self.data).decode('ascii')
