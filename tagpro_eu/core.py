@@ -13,6 +13,24 @@ from tagpro_eu.parsers import parse_splats
 from tagpro_eu.util import format_time
 
 
+def bulk_matches(filename, maps=None):
+    with open(filename) as f:
+        data = json.load(f)
+        for k, v in data.items():
+            match = Match(v)
+            match.match_id = k
+            match.map_id = v['mapId']
+            if maps is not None:
+                match.map = maps[match.map_id]
+            yield match
+
+
+def bulk_maps(filename):
+    with open(filename) as f:
+        data = json.load(f)
+        return {int(k): Map(v) for k, v in data.items()}
+
+
 class JsonObject:
     def __init__(self, data, strict=False):
         for f, t in self.__fields__.items():
