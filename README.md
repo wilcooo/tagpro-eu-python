@@ -26,7 +26,7 @@ The following are my minimum requirements for doing an initial release:
 - [x] Parsing of map BLOB
 - [x] Parsing of splat BLOB
 - [x] Add parsing functions to JSON objects
-- [ ] Add scoreboard formatter
+- [x] Add scoreboard formatter
 - [x] Add game timeline formatter
 - [x] Allow reading objects from files
 - [x] Allow downloading objects from tagpro.eu

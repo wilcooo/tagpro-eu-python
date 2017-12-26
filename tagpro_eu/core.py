@@ -230,3 +230,36 @@ class Match(JsonObject):
 
     def __repr__(self):
         return f'Match(server={self.server!r}, port={self.port!r})'
+
+    def print_scoreboard(self, sort_key=None, fields=None):
+        def default_sort(p):
+            return -p.score
+
+        non_stat_attrs = ('name', 'score')
+        time_formatted_fields = ('time', 'hold', 'prevent', 'button', 'block')
+
+        def format_field(p, field):
+            if field in non_stat_attrs:
+                v = getattr(p, field)
+            else:
+                v = getattr(p.stats, field)
+
+            p = format_time(v) if field in time_formatted_fields else str(v)
+            return p.center(field_width(field))
+
+        def field_width(field):
+            return 12 if field == 'name' else 8
+
+        if sort_key is None:
+            sort_key = default_sort
+
+        if fields is None:
+            fields = ['name', 'score', 'time', 'tags', 'pops', 'grabs',
+                      'drops', 'hold', 'captures', 'returns', 'prevent',
+                      'button', 'block']
+
+        print('|'.join(f.title().center(field_width(f)) for f in fields))
+        print('-'.join('-' * field_width(f) for f in fields))
+
+        for p in sorted(self.players, key=sort_key):
+            print('|'.join(format_field(p, f) for f in fields))
