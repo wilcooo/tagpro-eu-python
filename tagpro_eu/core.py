@@ -247,6 +247,9 @@ class Match(JsonObject):
             p = format_time(v) if field in time_formatted_fields else str(v)
             return p.center(field_width(field))
 
+        def field_name(field):
+            return 'Powerups' if field == 'pups_total' else field.title()
+
         def field_width(field):
             return 12 if field == 'name' else 8
 
@@ -256,9 +259,9 @@ class Match(JsonObject):
         if fields is None:
             fields = ['name', 'score', 'time', 'tags', 'pops', 'grabs',
                       'drops', 'hold', 'captures', 'returns', 'prevent',
-                      'button', 'block']
+                      'button', 'block', 'pups_total']
 
-        print('|'.join(f.title().center(field_width(f)) for f in fields))
+        print('|'.join(field_name(f).center(field_width(f)) for f in fields))
         print('-'.join('-' * field_width(f) for f in fields))
 
         for p in sorted(self.players, key=sort_key):

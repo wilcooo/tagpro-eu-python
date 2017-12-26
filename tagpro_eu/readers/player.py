@@ -51,6 +51,10 @@ class PlayerStatCounter(PlayerEventHandler):
         self.block_since = -1
         self.pup_since = defaultdict(lambda: -1)
 
+    @property
+    def pups_total(self):
+        return sum(self.pups.values())
+
     def join(self, time, new_team):
         self.ingame_since = time
 
