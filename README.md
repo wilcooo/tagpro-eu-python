@@ -29,6 +29,6 @@ The following are my minimum requirements for doing an initial release:
 - [ ] Add scoreboard formatter
 - [x] Add game timeline formatter
 - [x] Allow reading objects from files
-- [ ] Allow downloading objects from tagpro.eu
+- [x] Allow downloading objects from tagpro.eu
 - [ ] Add proper documentation
 - [ ] Add examples
