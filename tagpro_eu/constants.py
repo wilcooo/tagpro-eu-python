@@ -1,180 +1,238 @@
+from enum import IntEnum, IntFlag
+
+
 # Teams
-NO_TEAM = 0
-RED_TEAM = 1
-BLUE_TEAM = 2
+class Team(IntEnum):
+    none = 0
+    red = 1
+    blue = 2
+
 
 # Flags
-NO_FLAG = 0
-OPP_FLAG = 1
-OPP_POTATO_FLAG = 2
-NEUTRAL_FLAG = 3
-NEUTRAL_POTATO_FLAG = 4
-TEMP_FLAG = 5
+class Flag(IntEnum):
+    none = 0
+    opponent = 1
+    opponent_potato = 2
+    neutral = 3
+    neutral_potato = 4
+    temp = 5
+
+    def __str__(self):
+        if self == Flag.none:
+            return 'No flag'
+        elif self == Flag.opponent:
+            return 'Opponent flag'
+        elif self == Flag.opponent_potato:
+            return 'Opponent potato'
+        elif self == Flag.neutral:
+            return 'Neutral flag'
+        elif self == Flag.neutral_potato:
+            return 'Neutral potato'
+        elif self == Flag.temp:
+            return 'Temporary flag'
+
+    def is_potato(self):
+        return self in (Flag.opponent_potato, Flag.neutral_potato)
+
+    def is_opponent(self):
+        return self in (Flag.opponent, Flag.opponent_potato)
+
+    def is_neutral(self):
+        return self in (Flag.neutral, Flag.neutral_potato)
+
 
 # Powerups
-NO_POWER = 0
-JUKE_JUICE = 1
-ROLLING_BOMB = 2
-TAGPRO = 4
-TOP_SPEED = 8
+class Powerup(IntFlag):
+    none = 0
+    juke_juice = 1
+    rolling_bomb = 2
+    tagpro = 4
+    top_speed = 8
+    all = 15
 
-POWERUPS = (JUKE_JUICE, ROLLING_BOMB, TAGPRO, TOP_SPEED)
+    def __str__(self):
+        if self == Powerup.none:
+            return 'No powerups'
+        elif self == Powerup.juke_juice:
+            return 'Juke Juice'
+        elif self == Powerup.rolling_bomb:
+            return 'Rolling Bomb'
+        elif self == Powerup.tagpro:
+            return 'TagPro'
+        elif self == Powerup.top_speed:
+            return 'Top Speed'
+        else:
+            return ', '.join(str(p)
+                             for p in Powerup.enumerate()
+                             if self & p > 0)
+
+    @classmethod
+    def enumerate(cls):
+        yield from (
+            Powerup.juke_juice,
+            Powerup.rolling_bomb,
+            Powerup.tagpro,
+            Powerup.top_speed
+        )
+
 
 # Tiles
-EMPTY_TILE = 0
+class Tile(IntEnum):
+    empty = 0
 
-FULL_WALL_TILE = 10
-LL_WALL_TILE = 11
-UL_WALL_TILE = 12
-UR_WALL_TILE = 13
-LR_WALL_TILE = 14
+    wall = 10
+    wall_ll = 11
+    wall_ul = 12
+    wall_ur = 13
+    wall_lr = 14
 
-FLOOR_TILE = 20
+    floor = 20
 
-RED_TEAM_TILE = 110
-BLUE_TEAM_TILE = 120
-NEUTRAL_TEAM_TILE = 230
+    team_red = 110
+    team_blue = 120
+    team_neutral = 230
 
-RED_FLAG_TILE = 30
-BLUE_FLAG_TILE = 40
-NEUTRAL_FLAG_TILE = 160
+    flag_red = 30
+    flag_blue = 40
+    flag_neutral = 160
 
-RED_POTATO_TILE = 190
-BLUE_POTATO_TILE = 200
-NEUTRAL_POTATO_TILE = 210
+    potato_red = 190
+    potato_blue = 200
+    potato_neutral = 210
 
-TEMP_FLAG_TILE = 161
+    flag_temp = 161
 
-NEUTRAL_BOOST_TILE = 50
-RED_BOOST_TILE = 140
-BLUE_BOOST_TILE = 150
+    boost = 50
+    boost_red = 140
+    boost_blue = 150
 
-BOMB_TILE = 100
+    bomb = 100
 
-SPIKE_TILE = 70
+    spike = 70
 
-POWERUP_TILE = 60
-JUKE_JUICE_TILE = 61
-ROLLING_BOMB_TILE = 62
-TAGPRO_TILE = 63
-TOP_SPEED_TILE = 64
+    powerup = 60
+    juke_juice = 61
+    rolling_bomb = 62
+    tagpro = 63
+    top_speed = 64
 
-BUTTON_TILE = 80
+    button = 80
 
-OPEN_GATE_TILE = 90
-GREEN_GATE_TILE = 91
-RED_GATE_TILE = 92
-BLUE_GATE_TILE = 93
+    gate_open = 90
+    gate_green = 91
+    gate_red = 92
+    gate_blue = 93
 
-PORTAL_ENTRY_TILE = 130
-PORTAL_EXIT_TILE = 131
+    protal_entry = 130
+    portal_exit = 131
 
-RED_ENDZONE_TILE = 170
-BLUE_ENDZONE_TILE = 180
+    endzone_red = 170
+    endzone_blue = 180
 
-MARSBALL_TILE = 211
+    marsball = 211
 
-GRAVITY_WELL_TILE = 220
+    gravity_well = 220
+
 
 # Flairs
+class Flair(IntEnum):
+    none = 0
 
-FLAIR_NONE = 0
+    leaderboard_day = 1
+    leaderboard_week = 2
+    leaderboard_month = 3
 
-FLAIR_LEADERBOARD_DAY = 1
-FLAIR_LEADERBOARD_WEEK = 2
-FLAIR_LEADERBOARD_MONTH = 3
+    winrate_55 = 4
+    winrate_65 = 5
+    winrate_75 = 6
 
-FLAIR_WINRATE_55 = 4
-FLAIR_WINRATE_65 = 5
-FLAIR_WINRATE_75 = 6
+    donor_10 = 18
+    donor_40 = 20
+    donor_100 = 21
+    donor_200 = 24
+    donor_btc = 25
 
-FLAIR_DONOR_10 = 18
-FLAIR_DONOR_40 = 20
-FLAIR_DONOR_100 = 21
-FLAIR_DONOR_200 = 24
-FLAIR_DONOR_BTC = 25
+    developer = 19
+    community_contributor = 17
+    contest_winner = 22
+    moderator = 7
+    maptester = 8
 
-FLAIR_DEVELOPER = 19
-FLAIR_COMMUNITY_CONTRIBUTOR = 17
-FLAIR_CONTEST_WINNER = 22
-FLAIR_MODERATOR = 7
-FLAIR_MAPTESTER = 8
+    kongregate = 23
 
-FLAIR_KONGREGATE = 23
+    birthday_1 = 33
+    birthday_2a = 40
+    birthday_2b = 41
+    birthday_3a = 55
+    birthday_3b = 56
+    birthday_4a = 72
+    birthday_4b = 73
+    birthday_4c = 74
 
-FLAIR_BIRTHDAY_1 = 33
-FLAIR_BIRTHDAY_2A = 40
-FLAIR_BIRTHDAY_2B = 41
-FLAIR_BIRTHDAY_3A = 55
-FLAIR_BIRTHDAY_3B = 56
-FLAIR_BIRTHDAY_4A = 72
-FLAIR_BIRTHDAY_4B = 73
-FLAIR_BIRTHDAY_4C = 74
+    st_patricks_1 = 34
+    st_patricks_2 = 42
+    st_patricks_3 = 57
 
-FLAIR_ST_PATRICKS_1 = 34
-FLAIR_ST_PATRICKS_2 = 42
-FLAIR_ST_PATRICKS_3 = 57
+    april_1 = 35
+    april_2 = 43
 
-FLAIR_APRIL_1 = 35
-FLAIR_APRIL_2 = 43
+    easter_1 = 36
+    easter_2a = 49
+    easter_2b = 50
+    easter_3a = 58
+    easter_3b = 59
+    easter_3c = 65
+    easter_4a = 44
+    easter_4b = 45
 
-FLAIR_EASTER_1 = 36
-FLAIR_EASTER_2A = 49
-FLAIR_EASTER_2B = 50
-FLAIR_EASTER_3A = 58
-FLAIR_EASTER_3B = 59
-FLAIR_EASTER_3C = 65
-FLAIR_EASTER_4A = 44
-FLAIR_EASTER_4B = 45
+    unfortunatesniper = 37
 
-FLAIR_UNFORTUNATESNIPER = 37
+    halloween_1a = 38
+    halloween_1b = 39
+    halloween_2a = 52
+    halloween_2b = 53
+    halloween_2c = 54
+    halloween_3a = 66
+    halloween_3b = 67
+    halloween_3c = 68
+    halloween_4a = 75
+    halloween_4b = 76
+    halloween_4c = 77
 
-FLAIR_HALLOWEEN_1A = 38
-FLAIR_HALLOWEEN_1B = 39
-FLAIR_HALLOWEEN_2A = 52
-FLAIR_HALLOWEEN_2B = 53
-FLAIR_HALLOWEEN_2C = 54
-FLAIR_HALLOWEEN_3A = 66
-FLAIR_HALLOWEEN_3B = 67
-FLAIR_HALLOWEEN_3C = 68
-FLAIR_HALLOWEEN_4A = 75
-FLAIR_HALLOWEEN_4B = 76
-FLAIR_HALLOWEEN_4C = 77
+    lgbt = 51
 
-FLAIR_LGBT = 51
+    christmas_1a = 69
+    christmas_1b = 70
+    christmas_1c = 71
 
-FLAIR_CHRISTMAS_1A = 69
-FLAIR_CHRISTMAS_1B = 70
-FLAIR_CHRISTMAS_1C = 71
-
-FLAIR_DEGREE_2 = 116
-FLAIR_DEGREE_6 = 81
-FLAIR_DEGREE_9 = 117
-FLAIR_DEGREE_11 = 82
-FLAIR_DEGREE_17 = 104
-FLAIR_DEGREE_32 = 83
-FLAIR_DEGREE_42 = 84
-FLAIR_DEGREE_51 = 85
-FLAIR_DEGREE_57 = 118
-FLAIR_DEGREE_66 = 86
-FLAIR_DEGREE_69 = 87
-FLAIR_DEGREE_79 = 105
-FLAIR_DEGREE_88 = 88
-FLAIR_DEGREE_98 = 89
-FLAIR_DEGREE_100 = 90
-FLAIR_DEGREE_101 = 97
-FLAIR_DEGREE_110 = 119
-FLAIR_DEGREE_123 = 98
-FLAIR_DEGREE_130 = 106
-FLAIR_DEGREE_143 = 99
-FLAIR_DEGREE_151 = 100
-FLAIR_DEGREE_168 = 101
-FLAIR_DEGREE_180 = 102
-FLAIR_DEGREE_196 = 103
-FLAIR_DEGREE_206 = 121
-FLAIR_DEGREE_212 = 91
-FLAIR_DEGREE_220 = 120
-FLAIR_DEGREE_238 = 107
-FLAIR_DEGREE_276 = 115
-FLAIR_DEGREE_300 = 113
-FLAIR_DEGREE_314 = 114
+    degree_2 = 116
+    degree_6 = 81
+    degree_9 = 117
+    degree_11 = 82
+    degree_17 = 104
+    degree_32 = 83
+    degree_42 = 84
+    degree_51 = 85
+    degree_57 = 118
+    degree_66 = 86
+    degree_69 = 87
+    degree_79 = 105
+    degree_88 = 88
+    degree_98 = 89
+    degree_100 = 90
+    degree_101 = 97
+    degree_110 = 119
+    degree_123 = 98
+    degree_130 = 106
+    degree_143 = 99
+    degree_151 = 100
+    degree_168 = 101
+    degree_180 = 102
+    degree_196 = 103
+    degree_206 = 121
+    degree_212 = 91
+    degree_220 = 120
+    degree_238 = 107
+    degree_276 = 115
+    degree_300 = 113
+    degree_314 = 114

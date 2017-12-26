@@ -1,7 +1,7 @@
 import heapq
-from tagpro_eu import constants
-from tagpro_eu.util import flag_name
-from tagpro_eu.util import format_powerups
+
+from collections import defaultdict
+from tagpro_eu.constants import Powerup
 
 
 class PlayerEventHandler:
@@ -40,20 +40,8 @@ class PlayerStatCounter(PlayerEventHandler):
         self.prevent = 0
         self.button = 0
         self.block = 0
-        self.pups = {
-            constants.NO_POWER: 0, # unknown
-
-            constants.JUKE_JUICE: 0,
-            constants.ROLLING_BOMB: 0,
-            constants.TAGPRO: 0,
-            constants.TOP_SPEED: 0,
-        }
-        self.pup_time = {
-            constants.JUKE_JUICE: 0,
-            constants.ROLLING_BOMB: 0,
-            constants.TAGPRO: 0,
-            constants.TOP_SPEED: 0,
-        }
+        self.pups = defaultdict(int)
+        self.pup_time = defaultdict(int)
         self.time = 0
 
         self.ingame_since = -1
@@ -61,12 +49,7 @@ class PlayerStatCounter(PlayerEventHandler):
         self.prevent_since = -1
         self.button_since = -1
         self.block_since = -1
-        self.pup_since = {
-            constants.JUKE_JUICE: -1,
-            constants.ROLLING_BOMB: -1,
-            constants.TAGPRO: -1,
-            constants.TOP_SPEED: -1,
-        }
+        self.pup_since = defaultdict(lambda: -1)
 
     def join(self, time, new_team):
         self.ingame_since = time
@@ -97,7 +80,7 @@ class PlayerStatCounter(PlayerEventHandler):
         self.pup_since[power_up] = time
 
     def duplicate_powerup(self, time, flag, powers, team):
-        self.pups[constants.NO_POWER] += 1
+        self.pups[Powerup.none] += 1
 
     def powerdown(self, time, flag, power_down, new_powers, team):
         if self.pup_since[power_down] >= 0:
@@ -151,7 +134,7 @@ class PlayerStatCounter(PlayerEventHandler):
             self.time += time - self.ingame_since
             self.ingame_since = -1
 
-        for p in constants.POWERUPS:
+        for p in Powerup.enumerate():
             if self.pup_since[p] >= 0:
                 self.pup_time[p] += time - self.pup_since[p]
                 self.pup_since[p] = -1
@@ -196,11 +179,11 @@ class PlayerEventLogger(PlayerEventHandler):
 
     def grab(self, time, new_flag, powers, team):
         heapq.heappush(self.heap,
-            (time, f'Grab {flag_name(new_flag)}', self.player))
+            (time, f'Grab {new_flag!s}', self.player))
 
     def capture(self, time, old_flag, powers, team):
         heapq.heappush(self.heap,
-            (time, f'Capture {flag_name(old_flag)}', self.player))
+            (time, f'Capture {old_flag!s}', self.player))
 
     def flagless_capture(self, time, flag, powers, team):
         heapq.heappush(self.heap,
@@ -208,7 +191,7 @@ class PlayerEventLogger(PlayerEventHandler):
 
     def powerup(self, time, flag, power_up, new_powers, team):
         heapq.heappush(self.heap,
-            (time, f'Power up {format_powerups(power_up)}', self.player))
+            (time, f'Power up {power_up!s}', self.player))
 
     def duplicate_powerup(self, time, flag, powers, team):
         heapq.heappush(self.heap,
@@ -216,7 +199,7 @@ class PlayerEventLogger(PlayerEventHandler):
 
     def powerdown(self, time, flag, power_down, new_powers, team):
         heapq.heappush(self.heap,
-            (time, f'Power down {format_powerups(power_down)}', self.player))
+            (time, f'Power down {power_down!s}', self.player))
 
     def return_(self, time, flag, powers, team):
         heapq.heappush(self.heap, (time, 'Return', self.player))
@@ -226,7 +209,7 @@ class PlayerEventLogger(PlayerEventHandler):
 
     def drop(self, time, old_flag, powers, team):
         heapq.heappush(self.heap,
-            (time, f'Drop {flag_name(old_flag)}', self.player))
+            (time, f'Drop {old_flag!s}', self.player))
 
     def pop(self, time, powers, team):
         heapq.heappush(self.heap, (time, 'Pop', self.player))

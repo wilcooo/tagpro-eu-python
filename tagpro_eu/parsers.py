@@ -1,4 +1,4 @@
-from tagpro_eu import constants
+from tagpro_eu.constants import Flag, Powerup, Team, Tile
 from tagpro_eu.handlers.player import PlayerEventHandler
 from tagpro_eu.handlers.map import MapHandler
 from tagpro_eu.handlers.splats import SplatsHandler
@@ -11,8 +11,8 @@ def parse_player(blob, team, duration, handler=None):
     blob.reset()
 
     time = 0
-    flag = constants.NO_FLAG
-    powers = constants.NO_POWER
+    flag = Flag.none
+    powers = Powerup.none
     prevent = False
     button = False
     block = False
@@ -23,14 +23,14 @@ def parse_player(blob, team, duration, handler=None):
     while not blob.end():
         new_team = team
         if blob.read_bool():
-            if team == constants.NO_TEAM:
-                new_team = 1 + blob.read_bool()
+            if team == Team.none:
+                new_team = Team(1 + blob.read_bool())
             elif blob.read_bool():
-                new_team = constants.NO_TEAM
-            elif team == constants.RED_TEAM:
-                new_team = constants.BLUE_TEAM
-            elif team == constants.BLUE_TEAM:
-                new_team = constants.RED_TEAM
+                new_team = Team.none
+            elif team == Team.red:
+                new_team = Team.blue
+            elif team == Team.blue:
+                new_team = Team.red
 
         drop_pop = blob.read_bool()
         returns = blob.read_tally()
@@ -47,15 +47,15 @@ def parse_player(blob, team, duration, handler=None):
         new_flag = flag
         if grab:
             if keep:
-                new_flag = 1 + blob.read_fixed(2)
+                new_flag = Flag(1 + blob.read_fixed(2))
             else:
-                new_flag = constants.TEMP_FLAG
+                new_flag = Flag.temp
 
         powerups = blob.read_tally()
-        pdown = constants.NO_POWER
-        pup = constants.NO_POWER
+        pdown = Powerup.none
+        pup = Powerup.none
 
-        for p in constants.POWERUPS:
+        for p in Powerup.enumerate():
             if powers & p and blob.read_bool():
                 pdown |= p
             elif powerups and blob.read_bool():
@@ -87,10 +87,10 @@ def parse_player(blob, team, duration, handler=None):
                 handler.flagless_capture(time, flag, powers, team)
             else:
                 handler.capture(time, flag, powers, team)
-                flag = constants.NO_FLAG
+                flag = Flag.none
                 keep = True
 
-        for p in constants.POWERUPS:
+        for p in Powerup.enumerate():
             if pdown & p:
                 powers ^= p
                 handler.powerdown(time, flag, p, powers, team)
@@ -128,18 +128,18 @@ def parse_player(blob, team, duration, handler=None):
         if drop_pop:
             if flag:
                 handler.drop(time, flag, powers, team)
-                flag = constants.NO_FLAG
+                flag = Flag.none
             else:
                 handler.pop(time, powers, team)
 
         if new_team != team:
             if not new_team:
                 handler.quit(time, flag, powers, team)
-                powers = constants.NO_POWER
+                powers = Powerup.none
             else:
                 handler.switch(time, flag, powers, new_team)
 
-            flag = constants.NO_FLAG
+            flag = Flag.none
             team = new_team
 
     handler.end(duration, flag, powers, team)
@@ -155,7 +155,7 @@ def parse_map(blob, width, handler=None):
 
     while not blob.end() or x > 0:
         tile = blob.read_fixed(6)
-        if tile != constants.EMPTY_TILE:
+        if tile != Tile.empty:
             # idk
             if tile < 6:
                 tile += 9

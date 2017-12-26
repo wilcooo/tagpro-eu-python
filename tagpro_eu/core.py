@@ -4,12 +4,9 @@ import json
 
 from tagpro_eu.blob import Blob
 from tagpro_eu.handlers.map import MapSaver
-from tagpro_eu.handlers.player import PlayerStatCounter
-from tagpro_eu.handlers.player import PlayerEventLogger
+from tagpro_eu.handlers.player import PlayerEventLogger, PlayerStatCounter
 from tagpro_eu.handlers.splats import SplatsSaver
-from tagpro_eu.parsers import parse_map
-from tagpro_eu.parsers import parse_player
-from tagpro_eu.parsers import parse_splats
+from tagpro_eu.parsers import parse_map, parse_player, parse_splats
 from tagpro_eu.util import format_time
 
 

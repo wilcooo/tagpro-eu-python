@@ -1,6 +1,3 @@
-from tagpro_eu import constants
-
-
 class MapHandler:
     # flake8: noqa
     def height(self, new_y): pass
