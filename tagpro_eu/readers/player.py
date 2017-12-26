@@ -5,6 +5,9 @@ from tagpro_eu.constants import Powerup
 
 
 class PlayerEventHandler:
+    """
+    Event handler for reading a player's events blob.
+    """
     # flake8: noqa
     def join(self, time, new_team): pass
     def quit(self, time, old_flag, old_powers, old_team): pass
@@ -29,6 +32,9 @@ class PlayerEventHandler:
 
 
 class PlayerStats(PlayerEventHandler):
+    """
+    Implementation of PlayerEventHandler that accumulates the player's stats.
+    """
     def __init__(self):
         self.tags = 0
         self.pops = 0
@@ -53,6 +59,11 @@ class PlayerStats(PlayerEventHandler):
 
     @property
     def pups_total(self):
+        """
+        Return the total number of powerups picked up by the player.
+
+        :returns: number of powerups
+        """
         return sum(self.pups.values())
 
     def join(self, time, new_team):
@@ -161,7 +172,20 @@ class PlayerStats(PlayerEventHandler):
 
 
 class PlayerEventLogger(PlayerEventHandler):
+    """
+    Implementation of PlayerEventHandler that logs all events to a priority
+    queue (MinHeap). Each earliest event can be collected from the queue by
+    repeatedly calling heappop from the module heapq.
+    """
     def __init__(self, heap=None, player=None):
+        """
+        Initialize an event logger with the given queue and player object.
+        If no queue is given, a new one is made which can be later acquired
+        from the heap attribute.
+
+        :param heap: the priority queue to log to
+        :param player: the Player object corresponding to this logger
+        """
         if heap is None:
             heap = []
 
@@ -169,6 +193,14 @@ class PlayerEventLogger(PlayerEventHandler):
         self.player = player
 
     def get_team_name(self, team):
+        """
+        Return the name of a team. If a Player object was given in the
+        constructor, the actual team name as set in the json object is used.
+        Otherwise, the default name (red/blue) is used.
+
+        :param team: the team to get the name of
+        :returns: the name of the team
+        """
         if self.player is None:
             return str(team)
 

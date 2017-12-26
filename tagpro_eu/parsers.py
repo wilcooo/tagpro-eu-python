@@ -5,6 +5,14 @@ from tagpro_eu.readers.splats import SplatsHandler
 
 
 def parse_player(blob, team, duration, handler=None):
+    """
+    Parse a player blob using the given reader.
+
+    :param blob: the blob to read from
+    :param team: the team the player is on, according to the Player object
+    :param duration: the duration of the match
+    :param handler: the reader to use for parsing
+    """
     if handler is None:
         handler = PlayerEventHandler()
 
@@ -146,6 +154,12 @@ def parse_player(blob, team, duration, handler=None):
 
 
 def parse_map(blob, width, handler=None):
+    """
+    Parse a map blob using the given reader.
+
+    :param width: the width of the map to read, as read from the Map object
+    :param handler: the reader to use for parsing
+    """
     if handler is None:
         handler = MapHandler()
 
@@ -182,6 +196,14 @@ def parse_map(blob, width, handler=None):
 
 
 def parse_splats(blob, width, height, handler=None):
+    """
+    Parse a splats blob using the given reader.
+
+    :param width: the width of the map to read, as read from the Map object
+    :param height: the height of the map to read, which can be discovered by
+    parsing the map blob (or accessing the height property in Map object)
+    :param handler: the reader to use for parsing
+    """
     def bits(size):
         size *= 40
         grid = size - 1

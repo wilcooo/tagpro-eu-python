@@ -3,6 +3,10 @@ from enum import IntEnum, IntFlag
 
 # Teams
 class Team(IntEnum):
+    """
+    The team a player can be on. Actual names of teams can be discovered from
+    their corresponding Team objects.
+    """
     none = 0
     red = 1
     blue = 2
@@ -10,6 +14,9 @@ class Team(IntEnum):
 
 # Flags
 class Flag(IntEnum):
+    """
+    The flag a player can be holding.
+    """
     none = 0
     opponent = 1
     opponent_potato = 2
@@ -32,17 +39,36 @@ class Flag(IntEnum):
             return 'Temporary flag'
 
     def is_potato(self):
+        """
+        Return whether or not a flag is a potato.
+
+        :return: whether or not the flag is a potato
+        """
         return self in (Flag.opponent_potato, Flag.neutral_potato)
 
     def is_opponent(self):
+        """
+        Return whether or not a flag is the opponent's.
+
+        :return: whether or not the flag is the opponent's
+        """
         return self in (Flag.opponent, Flag.opponent_potato)
 
     def is_neutral(self):
+        """
+        Return whether or not a flag is a neutral flag.
+
+        :return: whether or not the flag is a neutral flag
+        """
         return self in (Flag.neutral, Flag.neutral_potato)
 
 
 # Powerups
 class Powerup(IntFlag):
+    """
+    The powerups a player can have. This is a flag enum, so values can be
+    combined using | or +.
+    """
     none = 0
     juke_juice = 1
     rolling_bomb = 2
@@ -68,6 +94,11 @@ class Powerup(IntFlag):
 
     @classmethod
     def enumerate(cls):
+        """
+        Yield all four distinct powerups a player can have.
+
+        :returns: the four powerups
+        """
         yield from (
             Powerup.juke_juice,
             Powerup.rolling_bomb,
@@ -78,6 +109,9 @@ class Powerup(IntFlag):
 
 # Tiles
 class Tile(IntEnum):
+    """
+    A tile on a map.
+    """
     empty = 0
 
     wall = 10
@@ -136,6 +170,9 @@ class Tile(IntEnum):
 
 # Flairs
 class Flair(IntEnum):
+    """
+    A flair a player can use.
+    """
     none = 0
 
     leaderboard_day = 1

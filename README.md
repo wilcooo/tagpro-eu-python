@@ -30,5 +30,5 @@ The following are my minimum requirements for doing an initial release:
 - [x] Add game timeline formatter
 - [x] Allow reading objects from files
 - [x] Allow downloading objects from tagpro.eu
-- [ ] Add proper documentation
+- [x] Add proper documentation
 - [ ] Add examples
