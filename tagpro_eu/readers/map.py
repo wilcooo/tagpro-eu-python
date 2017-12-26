@@ -4,7 +4,7 @@ class MapHandler:
     def tile(self, new_x, y, tile): pass
 
 
-class MapSaver(MapHandler):
+class MapReader(MapHandler):
     def __init__(self):
         self.tiles = []
 

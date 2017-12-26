@@ -3,9 +3,9 @@ import heapq
 import json
 
 from tagpro_eu.blob import Blob
-from tagpro_eu.handlers.map import MapSaver
-from tagpro_eu.handlers.player import PlayerEventLogger, PlayerStatCounter
-from tagpro_eu.handlers.splats import SplatsSaver
+from tagpro_eu.readers.map import MapReader
+from tagpro_eu.readers.player import PlayerEventLogger, PlayerStatCounter
+from tagpro_eu.readers.splats import SplatsReader
 from tagpro_eu.parsers import parse_map, parse_player, parse_splats
 from tagpro_eu.util import format_time
 
@@ -108,7 +108,7 @@ class Map(JsonObject):
         return len(self.__tilemap__)
 
     def parse_tiles(self):
-        handler = MapSaver()
+        handler = MapReader()
         parse_map(self.__tiles__, self.width, handler=handler)
 
         self.__tilemap__ = handler.tiles
@@ -172,7 +172,7 @@ class Team(JsonObject):
     @property
     def splats(self):
         if self.__splatlist__ is None:
-            handler = SplatsSaver()
+            handler = SplatsReader()
 
             width = self.__parent__.map.width
             height = self.__parent__.map.height

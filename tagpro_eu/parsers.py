@@ -1,7 +1,7 @@
 from tagpro_eu.constants import Flag, Powerup, Team, Tile
-from tagpro_eu.handlers.player import PlayerEventHandler
-from tagpro_eu.handlers.map import MapHandler
-from tagpro_eu.handlers.splats import SplatsHandler
+from tagpro_eu.readers.player import PlayerEventHandler
+from tagpro_eu.readers.map import MapHandler
+from tagpro_eu.readers.splats import SplatsHandler
 
 
 def parse_player(blob, team, duration, handler=None):

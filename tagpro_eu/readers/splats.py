@@ -2,7 +2,7 @@ class SplatsHandler:
     def splats(self, splats, index): pass
 
 
-class SplatsSaver(SplatsHandler):
+class SplatsReader(SplatsHandler):
     def __init__(self):
         self.splatlist = []
 
