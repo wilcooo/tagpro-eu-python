@@ -28,7 +28,7 @@ class PlayerEventHandler:
     def end(self, time, flag, powers, team): pass
 
 
-class PlayerStatCounter(PlayerEventHandler):
+class PlayerStats(PlayerEventHandler):
     def __init__(self):
         self.tags = 0
         self.pops = 0
