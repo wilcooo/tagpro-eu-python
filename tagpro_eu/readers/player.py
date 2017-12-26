@@ -157,11 +157,17 @@ class PlayerStatCounter(PlayerEventHandler):
 
 
 class PlayerEventLogger(PlayerEventHandler):
-    def __init__(self, heap, player):
+    def __init__(self, heap=None, player=None):
+        if heap is None:
+            heap = []
+
         self.heap = heap
         self.player = player
 
     def get_team_name(self, team):
+        if self.player is None:
+            return str(team)
+
         return self.player.__parent__.teams[team - 1].name
 
     def join(self, time, new_team):
