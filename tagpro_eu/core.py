@@ -75,9 +75,9 @@ class JsonObject:
         :param data: dict of loaded json data for this object
         :param strict: whether or not to use strict mode
         :returns: the loaded JsonObject
-        :raises KeyError: when strict mode is disabled and a missing key is
+        :raises KeyError: when strict mode is enabled and a missing key is
         found
-        :raises TypeError: when strict mode is disabled and an element has the
+        :raises TypeError: when strict mode is enabled and an element has the
         wrong data type
         """
         for f, t in self.__fields__.items():
