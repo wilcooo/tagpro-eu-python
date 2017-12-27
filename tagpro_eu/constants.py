@@ -11,6 +11,14 @@ class Team(IntEnum):
     red = 1
     blue = 2
 
+    def __str__(self):
+        if self == Team.none:
+            return "No team"
+        elif self == Team.red:
+            return "Red"
+        elif self == Team.blue:
+            return "Blue"
+
 
 # Flags
 class Flag(IntEnum):
