@@ -3,12 +3,20 @@ class Time(int):
     Represents an amount of time in-game.
     """
     @classmethod
-    def seconds(cls, x):
+    def from_seconds(cls, x):
         return cls(x * 60)
 
     @classmethod
-    def minutes(cls, x):
+    def from_minutes(cls, x):
         return cls(x * 3600)
+
+    @property
+    def seconds(self):
+        return self // 60
+
+    @property
+    def minutes(self):
+        return self // 3600
 
     def __add__(self, other):
         return Time(super(Time, self).__add__(other))
