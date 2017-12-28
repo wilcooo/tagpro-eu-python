@@ -126,6 +126,12 @@ class JsonObject:
         with open(filename) as f:
             return cls(json.load(f), strict=strict)
 
+    def __eq__(self, other):
+        for f in self.__fields__.keys():
+            if getattr(self, f) != getattr(other, f):
+                return False
+        return True
+
     def __repr__(self):
         return 'JsonObject()'
 
