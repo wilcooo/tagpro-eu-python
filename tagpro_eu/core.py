@@ -525,8 +525,13 @@ class Match(JsonObject):
                       'drops', 'hold', 'captures', 'returns', 'prevent',
                       'button', 'block', 'pups_total', 'points']
 
-        print('|'.join(field_name(f).center(field_width(f)) for f in fields))
-        print('-'.join('-' * field_width(f) for f in fields))
+        line = '+' + '+'.join('-' * field_width(f) for f in fields) + '+'
+        print(line)
+        print('|' + '|'.join(field_name(f).center(field_width(f))
+                             for f in fields) + '|')
+        print(line)
 
         for p in sorted(self.players, key=sort_key):
-            print('|'.join(format_field(p, f) for f in fields))
+            print('|' + '|'.join(format_field(p, f) for f in fields) + '|')
+
+        print(line)
