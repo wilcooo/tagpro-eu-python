@@ -314,10 +314,8 @@ class Team(JsonObject):
 class ListOf:
     """
     Helper to serve as a constructor for lists in JsonObjects, that
-    contain another type to be parsed. Essentially this is a curried version
-    of map:
-
-        ListOf(t)(d) = map(t, d)
+    contain another type to be parsed. Each object in the created list has
+    an index attribute, which corresponds to its index in the given list.
     """
     def __init__(self, t):
         """
@@ -326,7 +324,14 @@ class ListOf:
         self.type = t
 
     def __call__(self, data):
-        return list(map(self.type, data))
+        out = []
+
+        for i, d in enumerate(data):
+            v = self.type(d)
+            v.index = i
+            out.append(v)
+
+        return out
 
 
 class Match(JsonObject):
