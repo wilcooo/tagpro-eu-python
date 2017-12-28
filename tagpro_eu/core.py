@@ -214,6 +214,17 @@ class Map(JsonObject):
 
         self.__tilemap__ = handler.tiles
 
+    def __eq__(self, other):
+        """
+        Equality of maps is determined by comparing tiles.
+
+        Map might have multiple iterations, so just name(+author) won't work.
+        Maps might be renamed, but still have the same tiles.
+        Maps will probably have to be compared across matches, so comparing
+        parents is not a good idea.
+        """
+        return self.tiles == other.tiles
+
     def __repr__(self):
         return f'Map(name={self.name!r})'
 
@@ -269,6 +280,18 @@ class Player(JsonObject):
         """
         return False
 
+    def __eq__(self, other):
+        """
+        There's no "safe" way to compare players across matches, as even if a
+        player is authorized, their name might have belonged to someone else
+        in the past.
+
+        If you analyze public games, I strongly recommend against using == on
+        players, and writing your own method instead. For private/competitive
+        games, this method should be fine though.
+        """
+        return self.name == other.name
+
     def __repr__(self):
         return f'Player(name={self.name!r})'
 
@@ -322,6 +345,14 @@ class MatchTeam(JsonObject):
             self.__splatlist__ = handler.splatlist
 
         return self.__splatlist__
+
+    def __eq__(self, other):
+        """
+        I don't see a reason to compare teams across matches, so comparing
+        parents is fine.
+        """
+        return self.index == other.index and\
+            self.__parent__ == other.__parent__
 
     def __repr__(self):
         return f'MatchTeam(name={self.name!r})'
@@ -397,6 +428,11 @@ class Match(JsonObject):
         Return the blue team.
         """
         return self.team(Team.blue)
+
+    def __eq__(self, other):
+        return self.server == other.server and\
+               self.port == other.port and\
+               self.date == other.date
 
     def create_timeline(self, sort=False):
         """
