@@ -1,1 +1,1 @@
-from . import test_core, test_util
+from . import test_blob, test_core, test_util
