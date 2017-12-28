@@ -1,21 +1,35 @@
 class Time(int):
     """
     Represents an amount of time in-game.
+    Casting to int will give the number of frames.
     """
     @classmethod
     def from_seconds(cls, x):
+        """
+        Create a Time from a number of seconds.
+        """
         return cls(x * 60)
 
     @classmethod
     def from_minutes(cls, x):
+        """
+        Create a Time from a number of minutes.
+        """
         return cls(x * 3600)
 
     @property
     def seconds(self):
+        """
+        The number of seconds in this time, discarding the remainder frames.
+        """
         return self // 60
 
     @property
     def minutes(self):
+        """
+        The number of minutes in this time, discarding the remainder seconds
+        and frames.
+        """
         return self // 3600
 
     def __add__(self, other):
