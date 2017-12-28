@@ -499,7 +499,7 @@ class Match(JsonObject):
         def default_sort(p):
             return -p.score
 
-        non_stat_attrs = ('name', 'score')
+        non_stat_attrs = ('name', 'score', 'points')
         time_formatted_fields = ('time', 'hold', 'prevent', 'button', 'block')
 
         def format_field(p, field):
@@ -523,7 +523,7 @@ class Match(JsonObject):
         if fields is None:
             fields = ['name', 'score', 'time', 'tags', 'pops', 'grabs',
                       'drops', 'hold', 'captures', 'returns', 'prevent',
-                      'button', 'block', 'pups_total']
+                      'button', 'block', 'pups_total', 'points']
 
         print('|'.join(field_name(f).center(field_width(f)) for f in fields))
         print('-'.join('-' * field_width(f) for f in fields))
