@@ -76,13 +76,13 @@ class JsonObject:
         :returns: the loaded JsonObject
         :raises KeyError: when strict mode is enabled and a missing key is
         found
-        :raises TypeError: when strict mode is enabled and an element has the
-        wrong data type
+        :raises TypeError, ValueError: when strict mode is enabled and an
+        element has the wrong data type
         """
         for f, t in self.__fields__.items():
             try:
                 value = t(data[f.strip('_')])
-            except (KeyError, TypeError):
+            except (KeyError, ValueError, TypeError):
                 if strict:
                     raise
                 value = None
