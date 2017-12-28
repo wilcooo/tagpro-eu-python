@@ -281,7 +281,7 @@ class Player(JsonObject):
 
         :param handler: the PlayerEventHandler object used to read the events
         """
-        parse_player(self.events, self.team,
+        parse_player(self.events, self.__team__,
                      self.__parent__.duration, handler=handler)
 
     def __lt__(self, other):
