@@ -294,8 +294,8 @@ class Team(JsonObject):
         """
         Return a list of players on this team.
         """
-        return filter(lambda p: p.team == self.index + 1,
-                      self.__parent__.players)
+        return list(filter(lambda p: p.team == self.index + 1,
+                           self.__parent__.players))
 
     @property
     def splats(self):
