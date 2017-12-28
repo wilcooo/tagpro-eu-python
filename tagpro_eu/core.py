@@ -11,7 +11,7 @@ from tagpro_eu.parsers import parse_map, parse_player, parse_splats
 from tagpro_eu.util import format_time
 
 
-def bulk_matches(filename, maps=None):
+def load_matches(f, maps=None):
     """
     Read a file containing bulk match data, and yield the matches.
     A bulk file can be downloaded from https://tagpro.eu/?science
@@ -22,34 +22,32 @@ def bulk_matches(filename, maps=None):
 
     If you want, you can supply a maps object (also as downloaded from
     tagpro.eu) to fill map data from. This object can be loaded using the
-    bulk_maps method.
+    load_maps method.
 
-    :param filename: the name of the file to read matches from
+    :param f: a file descriptor to read matches from
     :param maps: the maps object (omit if undesired)
     :returns: the matches contained in the file
     """
-    with open(filename) as f:
-        data = json.load(f)
-        for k, v in data.items():
-            match = Match(v)
-            match.match_id = k
-            match.map_id = v['mapId']
-            if maps is not None:
-                match.map = maps[match.map_id]
-            yield match
+    data = json.load(f)
+    for k, v in data.items():
+        match = Match(v)
+        match.match_id = k
+        match.map_id = v['mapId']
+        if maps is not None:
+            match.map = maps[match.map_id]
+        yield match
 
 
-def bulk_maps(filename):
+def load_maps(f):
     """
     Read a file and return a maps object to be used in bulk_matches.
     The bulk maps file can be downloaded from https://tagpro.eu/?science
 
-    :param filename: the name of the file to read maps from
+    :param f: a file descriptor to read maps from
     :returns: the maps object
     """
-    with open(filename) as f:
-        data = json.load(f)
-        return {int(k): Map(v) for k, v in data.items()}
+    data = json.load(f)
+    return {int(k): Map(v) for k, v in data.items()}
 
 
 class JsonObject:
