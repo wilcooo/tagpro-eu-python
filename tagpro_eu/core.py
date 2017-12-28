@@ -3,6 +3,7 @@ import heapq
 import json
 
 from tagpro_eu.blob import Blob
+from tagpro_eu.constants import Team as TeamEnum
 from tagpro_eu.readers.map import MapReader
 from tagpro_eu.readers.player import PlayerEventLogger, PlayerStats
 from tagpro_eu.readers.splats import SplatsReader
@@ -361,6 +362,20 @@ class Match(JsonObject):
         'players': ListOf(Player),  # Array of player objects
         'teams': ListOf(Team),      # Array of team objects
     }
+
+    def get_team(self, team):
+        """
+        Return the Team object corresponding to the given Team enum value.
+
+        :param team: the team index (from tagpro_eu.constants.Team)
+        :returns: the Team object
+        """
+        if team == TeamEnum.red:
+            return self.teams[0]
+        elif team == TeamEnum.blue:
+            return self.teams[1]
+        else:
+            return None
 
     def create_timeline(self, sort=False):
         """
