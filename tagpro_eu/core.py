@@ -3,7 +3,7 @@ import heapq
 import json
 
 from tagpro_eu.blob import Blob
-from tagpro_eu.constants import Team as TeamEnum
+from tagpro_eu.constants import Team
 from tagpro_eu.readers.map import MapReader
 from tagpro_eu.readers.player import PlayerEventLogger, PlayerStats
 from tagpro_eu.readers.splats import SplatsReader
@@ -273,7 +273,7 @@ class Player(JsonObject):
         return f'Player(name={self.name!r})'
 
 
-class Team(JsonObject):
+class MatchTeam(JsonObject):
     """
     Represent a team object in tagpro.eu match files.
     The exact format can be found on https://tagpro.eu/?science
@@ -285,7 +285,7 @@ class Team(JsonObject):
     }
 
     def __init__(self, data):
-        super(Team, self).__init__(data)
+        super(MatchTeam, self).__init__(data)
 
         self.__splatlist__ = None
 
@@ -317,7 +317,7 @@ class Team(JsonObject):
         return self.__splatlist__
 
     def __repr__(self):
-        return f'Team(name={self.name!r})'
+        return f'MatchTeam(name={self.name!r})'
 
 
 class ListOf:
@@ -349,30 +349,30 @@ class Match(JsonObject):
     The exact format can be found on https://tagpro.eu/?science
     """
     __fields__ = {
-        'server': str,              # Domain name of the game server
+        'server': str,               # Domain name of the game server
         'port': int,
-        'official': bool,           # Played on an "official" server
-        'group': str,               # Group ID
+        'official': bool,            # Played on an "official" server
+        'group': str,                # Group ID
         # Start of the match
         'date': datetime.datetime.fromtimestamp,
-        'timeLimit': int,           # In minutes
-        'duration': int,            # In frames
+        'timeLimit': int,            # In minutes
+        'duration': int,             # In frames
         'finished': bool,
-        'map': Map,                 # Map object
-        'players': ListOf(Player),  # Array of player objects
-        'teams': ListOf(Team),      # Array of team objects
+        'map': Map,                  # Map object
+        'players': ListOf(Player),   # Array of player objects
+        'teams': ListOf(MatchTeam),  # Array of team objects
     }
 
     def get_team(self, team):
         """
-        Return the Team object corresponding to the given Team enum value.
+        Return the MatchTeam object corresponding to the given Team enum value.
 
         :param team: the team index (from tagpro_eu.constants.Team)
-        :returns: the Team object
+        :returns: the MatchTeam object
         """
-        if team == TeamEnum.red:
+        if team == Team.red:
             return self.teams[0]
-        elif team == TeamEnum.blue:
+        elif team == Team.blue:
             return self.teams[1]
         else:
             return None
