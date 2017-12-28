@@ -5,28 +5,29 @@ This script will take two match links as input, and print a markdown results
 post, much like the ones seen on r/ELTP
 """
 
-import tagpro_eu.web
+from tagpro_eu.constants import Team
+from tagpro_eu.web import download_match
 
 url1 = input('Half 1: ')
 url2 = input('Half 2: ')
 
-h1 = tagpro_eu.web.download_match(url=url1)
-h2 = tagpro_eu.web.download_match(url=url2)
+h1 = download_match(url=url1)
+h2 = download_match(url=url2)
 
 switched_in_second_half = None  # "Uncertain"
 
-t1 = h1.teams[0].name
-t2 = h1.teams[1].name
+t1 = h1.team_red.name
+t2 = h1.team_blue.name
 
 if t1 != 'Red' and t2 != 'Blue':
-    if h2.teams[0].name == t1 and h2.teams[1].name == t2:
+    if h2.team_red.name == t1 and h2.team_blue.name == t2:
         switched_in_second_half = False
-    elif h2.teams[0].name == t2 and h2.teams[1].name == t1:
+    elif h2.team_red.name == t2 and h2.team_blue.name == t1:
         switched_in_second_half = True
 
 if switched_in_second_half is None:
-    p1 = filter(lambda p: p.team == 0, h1.players)
-    p2 = filter(lambda p: p.team == 1, h1.players)
+    p1 = h1.team_red.players
+    p2 = h1.team_blue.players
 
     def find_player(match, player):
         for p in match.players:
@@ -34,21 +35,17 @@ if switched_in_second_half is None:
                 return p
         return None
 
-    def plays_on_team_h2(player, team):
-        p = find_player(h2, player.name)
-        if p is None:
-            return False
-        return p.team == team
-
     def number_on_team_h2(players, team):
         c = 0
         for p in players:
-            if plays_on_team_h2(p, team):
+            if p in h2.get_team(team).players:
                 c += 1
         return c
 
-    stayed = number_on_team_h2(p1, 1) + number_on_team_h2(p2, 0)
-    switched = number_on_team_h2(p1, 0) + number_on_team_h2(p2, 1)
+    switched = number_on_team_h2(p1, Team.blue) +\
+        number_on_team_h2(p2, Team.red)
+    stayed = number_on_team_h2(p1, Team.red) +\
+        number_on_team_h2(p2, Team.blue)
 
     if stayed > switched:
         switched_in_second_half = False
@@ -59,14 +56,14 @@ if switched_in_second_half is None:
         inp = input().lower()
         switched_in_second_half = inp.startswith('y')
 
-s11 = h1.teams[0].score
-s12 = h1.teams[1].score
+s1r = h1.team_red.score
+s1b = h1.team_blue.score
 
-s21 = h2.teams[0].score
-s22 = h2.teams[1].score
+s2r = h2.team_red.score
+s2b = h2.team_blue.score
 
 if switched_in_second_half:
-    s21, s22 = s22, s21
+    s2r, s2b = s2b, s2r
 
 
 def winner(s, t):
@@ -78,15 +75,15 @@ def winner(s, t):
         return 'Tie'
 
 
-w1 = winner(s11, s12)
-w2 = winner(s21, s22)
+w1 = winner(s1r, s1b)
+w2 = winner(s2r, s2b)
 
-s1 = s11 + s21
-s2 = s12 + s22
+sr = s1r + s2r
+sb = s1b + s2b
 
-w = winner(s1, s2)
+w = winner(sr, sb)
 
 
-print(f'# {t1} vs {t2}: {s1}-{s2} {w}')
-print(f'**H1:** [{s11}-{s12} {w1}]({url1})  ')
-print(f'**H2:** [{s21}-{s22} {w2}]({url2})')
+print(f'# {t1} vs {t2}: {sr}-{sb} {w}')
+print(f'**H1:** [{s1r}-{s1b} {w1}]({url1})  ')
+print(f'**H2:** [{s2r}-{s2b} {w2}]({url2})')
