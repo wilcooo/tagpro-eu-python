@@ -370,7 +370,7 @@ class Match(JsonObject):
         'teams': ListOf(MatchTeam),  # Array of team objects
     }
 
-    def get_team(self, team):
+    def team(self, team):
         """
         Return the MatchTeam object corresponding to the given Team enum value.
 
@@ -383,6 +383,20 @@ class Match(JsonObject):
             return self.teams[1]
         else:
             return None
+
+    @property
+    def team_red(self):
+        """
+        Return the red team.
+        """
+        return self.team(Team.red)
+
+    @property
+    def team_blue(self):
+        """
+        Return the blue team.
+        """
+        return self.team(Team.blue)
 
     def create_timeline(self, sort=False):
         """
