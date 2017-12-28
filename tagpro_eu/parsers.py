@@ -2,6 +2,7 @@ from tagpro_eu.constants import Flag, Powerup, Team, Tile
 from tagpro_eu.readers.player import PlayerEventHandler
 from tagpro_eu.readers.map import MapHandler
 from tagpro_eu.readers.splats import SplatsHandler
+from tagpro_eu.util import Time
 
 
 def parse_player(blob, team, duration, handler=None):
@@ -18,7 +19,7 @@ def parse_player(blob, team, duration, handler=None):
 
     blob.reset()
 
-    time = 0
+    time = Time()
     flag = Flag.none
     powers = Powerup.none
     prevent = False

@@ -8,7 +8,7 @@ from tagpro_eu.readers.map import MapReader
 from tagpro_eu.readers.player import PlayerEventLogger, PlayerStats
 from tagpro_eu.readers.splats import SplatsReader
 from tagpro_eu.parsers import parse_map, parse_player, parse_splats
-from tagpro_eu.util import format_time
+from tagpro_eu.util import Time
 
 
 def load_matches(f, maps=None):
@@ -404,7 +404,7 @@ class Match(JsonObject):
         # Start of the match
         'date': datetime.datetime.fromtimestamp,
         'timeLimit': int,            # In minutes
-        'duration': int,             # In frames
+        'duration': Time,            # In frames
         'finished': bool,
         'map': Map,                  # Map object
         'players': ListOf(Player),   # Array of player objects
@@ -478,7 +478,7 @@ class Match(JsonObject):
 
         while timeline:
             time, event, player = heapq.heappop(timeline)
-            print(f'{format_time(time)} | {player.name:<12} | {event}')
+            print(f'{time} | {player.name:<12} | {event}')
 
     def __repr__(self):
         return f'Match(server={self.server!r}, port={self.port!r})'
@@ -500,7 +500,6 @@ class Match(JsonObject):
             return -p.score
 
         non_stat_attrs = ('name', 'score', 'points')
-        time_formatted_fields = ('time', 'hold', 'prevent', 'button', 'block')
 
         def format_field(p, field):
             if field in non_stat_attrs:
@@ -508,8 +507,7 @@ class Match(JsonObject):
             else:
                 v = getattr(p.stats, field)
 
-            p = format_time(v) if field in time_formatted_fields else str(v)
-            return p.center(field_width(field))
+            return str(v).center(field_width(field))
 
         def field_name(field):
             return 'Powerups' if field == 'pups_total' else field.title()

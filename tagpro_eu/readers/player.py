@@ -2,6 +2,7 @@ import heapq
 
 from collections import defaultdict
 from tagpro_eu.constants import Powerup
+from tagpro_eu.util import Time
 
 
 class PlayerEventHandler:
@@ -40,15 +41,15 @@ class PlayerStats(PlayerEventHandler):
         self.pops = 0
         self.grabs = 0
         self.drops = 0
-        self.hold = 0
+        self.hold = Time()
         self.captures = 0
         self.returns = 0
-        self.prevent = 0
-        self.button = 0
-        self.block = 0
+        self.prevent = Time()
+        self.button = Time()
+        self.block = Time()
         self.pups = defaultdict(int)
-        self.pup_time = defaultdict(int)
-        self.time = 0
+        self.pup_time = defaultdict(Time)
+        self.time = Time()
 
         self.ingame_since = -1
         self.hold_since = -1
