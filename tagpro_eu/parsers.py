@@ -65,11 +65,13 @@ def parse_player(blob, team, duration, handler=None):
         pup = Powerup.none
 
         for p in Powerup.enumerate():
-            if powers & p and blob.read_bool():
-                pdown |= p
-            elif powerups and blob.read_bool():
-                pup |= p
-                powerups -= 1
+            if powers & p:  # Short-circuit 'and' will NOT work
+                if blob.read_bool():
+                    pdown |= p
+            elif powerups:
+                if blob.read_bool():
+                    pup |= p
+                    powerups -= 1
 
         toggle_prevent = blob.read_bool()
         toggle_button = blob.read_bool()
