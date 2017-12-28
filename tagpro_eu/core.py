@@ -178,7 +178,7 @@ class Map(JsonObject):
     }
 
     def __init__(self, data):
-        super(Map, self).__init__(data)
+        super().__init__(data)
 
         self.__tilemap__ = None
 
@@ -250,7 +250,7 @@ class Player(JsonObject):
     }
 
     def __init__(self, data):
-        super(Player, self).__init__(data)
+        super().__init__(data)
 
         self.__stats__ = None
 
@@ -319,7 +319,7 @@ class MatchTeam(JsonObject):
     }
 
     def __init__(self, data):
-        super(MatchTeam, self).__init__(data)
+        super().__init__(data)
 
         self.__splatlist__ = None
 

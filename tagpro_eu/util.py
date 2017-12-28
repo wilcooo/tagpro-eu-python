@@ -33,10 +33,10 @@ class Time(int):
         return self // 3600
 
     def __add__(self, other):
-        return Time(super(Time, self).__add__(other))
+        return Time(super().__add__(other))
 
     def __sub__(self, other):
-        return Time(super(Time, self).__sub__(other))
+        return Time(super().__sub__(other))
 
     def __str__(self):
         """
