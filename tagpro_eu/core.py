@@ -289,6 +289,14 @@ class Team(JsonObject):
         self.__splatlist__ = None
 
     @property
+    def players(self):
+        """
+        Return a list of players on this team.
+        """
+        return filter(lambda p: p.team == self.index + 1,
+                      self.__parent__.players)
+
+    @property
     def splats(self):
         """
         Return a list of splats on the map for this team. This is lazy-loaded
