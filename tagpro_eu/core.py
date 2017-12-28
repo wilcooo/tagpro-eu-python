@@ -174,7 +174,7 @@ class Map(JsonObject):
         'type': str,        # ctf, nf, mb etc., empty for unofficial maps
         'marsballs': int,   # number
         'width': int,
-        '__tiles__': Blob,
+        '__tiles__': Blob.from_b64,
     }
 
     def __init__(self, data):
@@ -246,7 +246,7 @@ class Player(JsonObject):
         'score': int,
         'points': int,    # rank points
         '__team__': int,  # at start of match; 1 = red, 2 = blue, 0 = join late
-        'events': Blob,
+        'events': Blob.from_b64,
     }
 
     def __init__(self, data):
@@ -315,7 +315,7 @@ class MatchTeam(JsonObject):
     __fields__ = {
         'name': str,
         'score': int,
-        '__splats__': Blob
+        '__splats__': Blob.from_b64
     }
 
     def __init__(self, data):

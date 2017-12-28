@@ -8,12 +8,21 @@ class Blob:
     """
     def __init__(self, data):
         """
+        Initialize a blob with the given bytestring as data.
+
+        :param data: the data for this blob
+        """
+        self.data = data
+        self.pos = 0
+
+    @classmethod
+    def from_b64(cls, b64data):
+        """
         Initialize a blob with the given base64-encoded data.
 
         :param data: the base64-encoded data for this blob
         """
-        self.data = base64.b64decode(data)
-        self.pos = 0
+        return cls(base64.b64decode(b64data))
 
     def end(self):
         """
