@@ -294,8 +294,15 @@ class MatchTeam(JsonObject):
         """
         Return a list of players on this team.
         """
-        return list(filter(lambda p: p.team == self.index + 1,
+        return list(filter(lambda p: p.team == self.team,
                            self.__parent__.players))
+
+    @property
+    def team(self):
+        """
+        Return the Team value (from tagpro_eu.constants) for this team.
+        """
+        return Team(self.index + 1)
 
     @property
     def splats(self):
