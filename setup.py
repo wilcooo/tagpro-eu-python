@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from setuptools import find_packages, setup
 
 from codecs import open
@@ -23,5 +24,7 @@ setup(
     keywords='tagpro',
 
     install_requires='requests',
-    python_requires='>=3.6'
+    python_requires='>=3.6',
+
+    test_suite='test'
 )
