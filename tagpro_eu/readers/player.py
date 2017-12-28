@@ -204,7 +204,7 @@ class PlayerEventLogger(PlayerEventHandler):
         if self.player is None:
             return str(team)
 
-        return self.player.__parent__.teams[team - 1].name
+        return self.player.__parent__.team(team).name
 
     def join(self, time, new_team):
         heapq.heappush(self.heap,

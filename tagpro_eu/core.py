@@ -241,11 +241,11 @@ class Player(JsonObject):
     __fields__ = {
         'auth': bool,
         'name': str,
-        'flair': int,   # index
+        'flair': int,     # index
         'degree': int,
         'score': int,
-        'points': int,  # rank points
-        'team': int,    # at start of match; 1 = red, 2 = blue, 0 = join late
+        'points': int,    # rank points
+        '__team__': int,  # at start of match; 1 = red, 2 = blue, 0 = join late
         'events': Blob,
     }
 
@@ -253,6 +253,13 @@ class Player(JsonObject):
         super(Player, self).__init__(data)
 
         self.__stats__ = None
+
+    @property
+    def team(self):
+        """
+        Return the MatchTeam object for the team this player is in.
+        """
+        return self.__parent__.team(self.__team__)
 
     @property
     def stats(self):
@@ -321,8 +328,7 @@ class MatchTeam(JsonObject):
         """
         Return a list of players on this team.
         """
-        return list(filter(lambda p: p.team == self.team,
-                           self.__parent__.players))
+        return list(filter(lambda p: p.team == self, self.__parent__.players))
 
     @property
     def team(self):

@@ -38,7 +38,7 @@ if switched_in_second_half is None:
     def number_on_team_h2(players, team):
         c = 0
         for p in players:
-            if p in h2.get_team(team).players:
+            if p in h2.team(team).players:
                 c += 1
         return c
 
