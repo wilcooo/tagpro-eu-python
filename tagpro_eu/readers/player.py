@@ -67,6 +67,21 @@ class PlayerStats(PlayerEventHandler):
         """
         return sum(self.pups.values())
 
+    def __add__(self, other):
+        new = PlayerStats()
+        keys = ['tags', 'pops', 'grabs', 'drops', 'hold', 'captures',
+                'returns', 'prevent', 'button', 'block', 'time']
+        pup_dicts = ['pups', 'pup_time']
+
+        for k in keys:
+            setattr(new, k, getattr(self, k) + getattr(other, k))
+
+        for k in pup_dicts:
+            for p in Powerup.enumerate():
+                getattr(new, k)[p] = getattr(self, k)[p] + getattr(other, k)[p]
+
+        return new
+
     def join(self, time, new_team):
         self.ingame_since = time
 
