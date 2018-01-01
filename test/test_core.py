@@ -1,23 +1,24 @@
-import tagpro_eu.core
+import tagpro_eu.json
+import tagpro_eu.match
 import unittest
 
 
-class JsonTestObject(tagpro_eu.core.JsonObject):
+class JsonTestObject(tagpro_eu.json.JsonObject):
     __fields__ = {
         'foo': int,
         '__bar__': int
     }
 
 
-class JsonTestObjectNested(tagpro_eu.core.JsonObject):
+class JsonTestObjectNested(tagpro_eu.json.JsonObject):
     __fields__ = {
         'inner': JsonTestObject
     }
 
 
-class JsonTestObjectWithList(tagpro_eu.core.JsonObject):
+class JsonTestObjectWithList(tagpro_eu.json.JsonObject):
     __fields__ = {
-        'list': tagpro_eu.core.ListOf(JsonTestObject)
+        'list': tagpro_eu.json.ListOf(JsonTestObject)
     }
 
 
@@ -100,7 +101,7 @@ class TestJsonObjectList(unittest.TestCase):
 
 class TestMatch(unittest.TestCase):
     def test_player_in_team(self):
-        match = tagpro_eu.core.Match({
+        match = tagpro_eu.match.Match({
             'players': [
                 {'name': 'foo', 'team': 1},
                 {'name': 'bar', 'team': 2}

@@ -1,7 +1,7 @@
 import re
 import requests
 
-import tagpro_eu.core
+import tagpro_eu.match
 
 
 def download_match(id=None, url=None, raw_url=None):
@@ -25,7 +25,7 @@ def download_match(id=None, url=None, raw_url=None):
     This method should probably not be called too many times, as it makes
     requests to tagpro.eu. If you have to download multiple matches, consider
     using a bulk file, which you can (manually) download on
-    https://tagpro.eu/?science. The module tagpro_eu.core has methods for
+    https://tagpro.eu/?science. The module tagpro_eu.bulk has methods for
     loading those.
 
     :param id: a match ID
@@ -50,7 +50,7 @@ def download_match(id=None, url=None, raw_url=None):
         raise ValueError("No valid match ID or URL was given")
 
     r = requests.get(raw_url)
-    return tagpro_eu.core.Match(r.json())
+    return tagpro_eu.match.Match(r.json())
 
 
 match_url_regex =\
