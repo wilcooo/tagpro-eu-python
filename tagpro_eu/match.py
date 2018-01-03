@@ -8,11 +8,12 @@ from tagpro_eu.json import JsonObject
 from tagpro_eu.json import ListOf
 from tagpro_eu.map import Map
 from tagpro_eu.player import Player
+from tagpro_eu.player import PlayerEventHandler
 from tagpro_eu.player import PlayerEventLogger
 from tagpro_eu.util import Time
 
 
-Splat = namedtuple('Splat', ['x', 'y', 'team'])
+Splat = namedtuple('Splat', ['x', 'y', 'player', 'team'])
 
 
 class MatchTeam(JsonObject):
@@ -80,6 +81,32 @@ class MatchTeam(JsonObject):
 
             return (result, ((1 << result) - size >> 1) + 20)
 
+        # Determine the players who the splats belong to
+        player_splats = []
+
+        class PlayerSplat(namedtuple('PlayerSplat', ['time', 'player'])):
+            _slots = ()
+
+            def __lt__(self, other):
+                return self.time < other.time
+
+        class PlayerSplatsHandler(PlayerEventHandler):
+            def __init__(self, player, team):
+                self.player = player
+                self.team = team
+
+            def drop(self, time, old_flag, powers, team):
+                self.pop(time, powers, team)
+
+            def pop(self, time, powers, team):
+                if team == self.team:
+                    heapq.heappush(player_splats,
+                                   PlayerSplat(time, self.player))
+
+        for p in self.__parent__.players:
+            h = PlayerSplatsHandler(p, self.team)
+            p.parse_events(h)
+
         blob = self.__splats__
         blob.reset()
 
@@ -97,7 +124,9 @@ class MatchTeam(JsonObject):
                 for i in range(n):
                     self.__splatlist__.append(
                         Splat(blob.read_fixed(x[0]) - x[1],
-                              blob.read_fixed(y[0]) - y[1], self))
+                              blob.read_fixed(y[0]) - y[1],
+                              heapq.heappop(player_splats).player,
+                              self))
 
             index += 1
 
