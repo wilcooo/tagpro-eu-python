@@ -53,7 +53,7 @@ class Map(JsonObject):
         Load __tilemap__ from the __tiles__ blob, to be used by the tiles and
         height properties.
         """
-        handler = MapReader()
+        self.__tilemap__ = []
 
         blob = self.__tiles__
         blob.reset()
@@ -79,15 +79,13 @@ class Map(JsonObject):
 
             for i in range(blob.read_footer() + 1):
                 if x == 0:
-                    handler.height(y)
-                handler.tile(x, y, tile)
+                    self.__tilemap__.append([])
+                self.__tilemap__[y].append(tile)
 
                 x += 1
                 if x == self.width:
                     x = 0
                     y += 1
-
-        self.__tilemap__ = handler.tiles
 
     def __eq__(self, other):
         """
@@ -102,31 +100,3 @@ class Map(JsonObject):
 
     def __repr__(self):
         return f'Map(name={self.name!r})'
-
-
-class MapHandler:
-    """
-    Event handler for reading a map blob.
-    You should probably not override this one, as simply accessing the tiles
-    property in Map (which uses MapReader) is much easier.
-    """
-    def height(self, new_y):
-        pass
-
-    def tile(self, new_x, y, tile):
-        pass
-
-
-class MapReader(MapHandler):
-    """
-    Implementation of MapHandler that stores the read tiles to a 2D array.
-    This array can be accessed from the tiles attribute.
-    """
-    def __init__(self):
-        self.tiles = []
-
-    def height(self, y):
-        self.tiles.append([])
-
-    def tile(self, x, y, tile):
-        self.tiles[y].append(tile)
