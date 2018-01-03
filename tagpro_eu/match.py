@@ -13,7 +13,11 @@ from tagpro_eu.player import PlayerEventLogger
 from tagpro_eu.util import Time
 
 
-Splat = namedtuple('Splat', ['x', 'y', 'player', 'team'])
+class Splat(namedtuple('Splat', ['time', 'x', 'y', 'player', 'team'])):
+    _slots = ()
+
+    def __lt__(self, other):
+        return self.time < other.time
 
 
 class MatchTeam(JsonObject):
@@ -122,10 +126,12 @@ class MatchTeam(JsonObject):
 
             if n > 0:
                 for i in range(n):
+                    ps = heapq.heappop(player_splats)
                     self.__splatlist__.append(
-                        Splat(blob.read_fixed(x[0]) - x[1],
+                        Splat(ps.time,
+                              blob.read_fixed(x[0]) - x[1],
                               blob.read_fixed(y[0]) - y[1],
-                              heapq.heappop(player_splats).player,
+                              ps.player,
                               self))
 
             index += 1
