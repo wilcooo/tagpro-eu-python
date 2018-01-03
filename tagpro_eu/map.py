@@ -80,7 +80,7 @@ class Map(JsonObject):
             for i in range(blob.read_footer() + 1):
                 if x == 0:
                     self.__tilemap__.append([])
-                self.__tilemap__[y].append(tile)
+                self.__tilemap__[y].append(Tile(tile))
 
                 x += 1
                 if x == self.width:
