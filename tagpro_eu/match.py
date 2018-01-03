@@ -1,3 +1,4 @@
+from collections import namedtuple
 import datetime
 import heapq
 
@@ -9,6 +10,9 @@ from tagpro_eu.map import Map
 from tagpro_eu.player import Player
 from tagpro_eu.player import PlayerEventLogger
 from tagpro_eu.util import Time
+
+
+Splat = namedtuple('Splat', ['x', 'y', 'team'])
 
 
 class MatchTeam(JsonObject):
@@ -91,8 +95,9 @@ class MatchTeam(JsonObject):
 
             if n > 0:
                 for i in range(n):
-                    self.__splatlist__.append((blob.read_fixed(x[0]) - x[1],
-                                               blob.read_fixed(y[0]) - y[1]))
+                    self.__splatlist__.append(
+                        Splat(blob.read_fixed(x[0]) - x[1],
+                              blob.read_fixed(y[0]) - y[1], self))
 
             index += 1
 
