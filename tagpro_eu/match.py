@@ -168,6 +168,11 @@ class Match(JsonObject):
         'teams': ListOf(MatchTeam),  # Array of team objects
     }
 
+    def __init__(self, data):
+        super().__init__(data)
+
+        self.__splats__ = None
+
     def team(self, team):
         """
         Return the MatchTeam object corresponding to the given Team enum value.
@@ -195,6 +200,28 @@ class Match(JsonObject):
         Return the blue team.
         """
         return self.team(Team.blue)
+
+    @property
+    def splats(self):
+        """
+        Return a list of all splats in the game.
+        """
+        if self.__splats__ is None:
+            sr = self.team_red.splats
+            sb = self.team_blue.splats
+            self.__splats__ = []
+
+            ir, ib = 0, 0
+
+            while ir < len(sr) or ib < len(sb):
+                if ib == len(sb) or ir < len(sr) and sr[ir] < sb[ib]:
+                    self.__splats__.append(sr[ir])
+                    ir += 1
+                else:
+                    self.__splats__.append(sb[ib])
+                    ib += 1
+
+        return self.__splats__
 
     def __eq__(self, other):
         return self.server == other.server and\
