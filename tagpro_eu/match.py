@@ -141,6 +141,9 @@ class MatchTeam(JsonObject):
         I don't see a reason to compare teams across matches, so comparing
         parents is fine.
         """
+        if isinstance(other, Team):
+            return self.team == other
+
         return other is not None and self.index == other.index and\
             self.__parent__ == other.__parent__
 
