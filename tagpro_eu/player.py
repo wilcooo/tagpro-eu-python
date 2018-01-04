@@ -2,7 +2,7 @@ from collections import defaultdict
 import heapq
 
 from tagpro_eu.blob import Blob
-from tagpro_eu.constants import Flag, Powerup, Team
+from tagpro_eu.constants import Flag, Flair, Powerup, Team
 from tagpro_eu.json import JsonObject
 from tagpro_eu.util import Time
 
@@ -15,7 +15,7 @@ class Player(JsonObject):
     __fields__ = {
         'auth': bool,
         'name': str,
-        'flair': int,     # index
+        'flair': Flair,
         'degree': int,
         'score': int,
         'points': int,    # rank points
