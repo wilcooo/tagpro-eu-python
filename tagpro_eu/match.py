@@ -14,7 +14,7 @@ from tagpro_eu.util import Time
 
 
 class Splat(namedtuple('Splat', ['time', 'x', 'y', 'player', 'team'])):
-    _slots = ()
+    __slots__ = ()
 
     def __lt__(self, other):
         return self.time < other.time
@@ -89,7 +89,7 @@ class MatchTeam(JsonObject):
         player_splats = []
 
         class PlayerSplat(namedtuple('PlayerSplat', ['time', 'player'])):
-            _slots = ()
+            __slots__ = ()
 
             def __lt__(self, other):
                 return self.time < other.time
