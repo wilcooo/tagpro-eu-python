@@ -4,7 +4,7 @@ import requests
 import tagpro_eu.match
 
 
-def download_match(id=None, url=None, raw_url=None):
+def download_match(url=None, id=None, raw_url=None):
     """
     Download the match with the given ID or URL, and return it as a Match
     object.
@@ -66,7 +66,7 @@ def match_url_to_id(url):
     :param url: the URL to extract the ID from
     :returns: the ID of the match, or None if the URL didn't match
     """
-    match = re.match(match_url_regex, url)
+    match = re.match(match_url_regex, str(url))
     if match is not None:
         return int(match.group(5))
     else:
