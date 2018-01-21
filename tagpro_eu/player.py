@@ -214,7 +214,7 @@ class Player(JsonObject):
         players, and writing your own method instead. For private/competitive
         games, this method should be fine though.
         """
-        return self.name == other.name
+        return other is not None and self.name == other.name
 
     def __repr__(self):
         return f'Player(name={self.name!r})'
