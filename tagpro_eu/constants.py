@@ -1,5 +1,7 @@
 from enum import IntEnum, IntFlag
 
+from tagpro_eu.match import MatchTeam
+
 
 # Teams
 class Team(IntEnum):
@@ -18,6 +20,11 @@ class Team(IntEnum):
             return "Red"
         elif self == Team.blue:
             return "Blue"
+
+    def __eq__(self, other):
+        if isinstance(other, MatchTeam):
+            return self == other.team
+        return super().__eq__(other)
 
 
 # Flags
