@@ -96,7 +96,7 @@ class Map(JsonObject):
         Maps will probably have to be compared across matches, so comparing
         parents is not a good idea.
         """
-        return self.tiles == other.tiles
+        return other is not None and self.tiles == other.tiles
 
     def __repr__(self):
         return f'Map(name={self.name!r})'
