@@ -10,6 +10,7 @@ from tagpro_eu.map import Map
 from tagpro_eu.player import Player
 from tagpro_eu.player import PlayerEventHandler
 from tagpro_eu.player import PlayerEventLogger
+from tagpro_eu.player import PlayerStats
 from tagpro_eu.util import Time
 
 
@@ -35,6 +36,7 @@ class MatchTeam(JsonObject):
         super().__init__(data)
 
         self.__splatlist__ = None
+        self.__stats__ = None
 
     @property
     def players(self):
@@ -62,6 +64,22 @@ class MatchTeam(JsonObject):
             self._parse_splats()
 
         return self.__splatlist__
+
+    @property
+    def stats(self):
+        """
+        Return a PlayerStats object containing the aggregate of all this team's
+        player's stats.
+
+        TODO: handle team switches properly
+        """
+        if self.__stats__ is None:
+            self.__stats__ = PlayerStats()
+            for player in self.players:
+                s = PlayerStats()
+                player.parse_events(s)
+                self.__stats__ += s
+        return self.__stats__
 
     def _parse_splats(self):
         def bits(size):
