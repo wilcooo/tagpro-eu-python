@@ -17,8 +17,8 @@ class Map(JsonObject):
         '__tiles__': Blob.from_b64,
     }
 
-    def __init__(self, data):
-        super().__init__(data)
+    def __init__(self, data, strict=False):
+        super().__init__(data, strict=strict)
 
         self.__tilemap__ = None
 

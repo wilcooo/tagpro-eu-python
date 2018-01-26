@@ -32,8 +32,8 @@ class MatchTeam(JsonObject):
         '__splats__': Blob.from_b64
     }
 
-    def __init__(self, data):
-        super().__init__(data)
+    def __init__(self, data, strict=False):
+        super().__init__(data, strict=strict)
 
         self.__splatlist__ = None
         self.__stats__ = None
@@ -189,8 +189,8 @@ class Match(JsonObject):
         'teams': ListOf(MatchTeam),  # Array of team objects
     }
 
-    def __init__(self, data):
-        super().__init__(data)
+    def __init__(self, data, strict=False):
+        super().__init__(data, strict=strict)
 
         self.__splats__ = None
 
