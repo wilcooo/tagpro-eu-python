@@ -26,5 +26,14 @@ setup(
     install_requires='requests',
     python_requires='>=3.6',
 
-    test_suite='test'
+    test_suite='test',
+
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+
+        'Programming Language :: Python :: 3.6',
+
+        'Topic :: Games/Entertainment',
+    ]
 )
