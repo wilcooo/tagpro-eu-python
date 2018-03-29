@@ -28,6 +28,7 @@ for link in links:
         stats[player.name] += player.stats
 
 columns = [
+    ('+/-', lambda s: s.cap_diff),
     ('time', lambda s: s.time // 60),
     ('tags', lambda s: s.tags),
     ('pops', lambda s: s.pops),
