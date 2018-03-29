@@ -249,6 +249,63 @@ class Match(JsonObject):
                self.port == other.port and\
                self.date == other.date
 
+    def __compute_cap_diff__(self):
+        """
+        Compute the caps_from and caps_against for all players in the game.
+        """
+        Cap = namedtuple('Cap', ['time', 'team'])
+        caps = []
+
+        class CapAggregator(PlayerEventHandler):
+            def capture(self, time, _, __, team):
+                caps.append(Cap(time, team))
+
+        agg = CapAggregator()
+
+        for player in self.players:
+            player.parse_events(agg)
+
+        caps.sort()
+
+        class CapDiffHandler(PlayerEventHandler):
+            def __init__(self, caplist, player):
+                self.team = Team.none
+                self.player = player
+                self.caplist = caplist
+                self.index = 0
+
+            def catch_up(self, time):
+                while self.index < len(self.caplist)\
+                        and self.caplist[self.index].time <= time:
+                    if self.team != Team.none:
+                        capteam = self.caplist[self.index].team
+                        if capteam == self.team:
+                            self.player.__caps_for__ += 1
+                        else:
+                            self.player.__caps_against__ += 1
+                    self.index += 1
+
+            def join(self, time, team):
+                self.catch_up(time)
+                self.team = team
+
+            def quit(self, time, _, __, ___):
+                self.catch_up(time)
+                self.team = Team.none
+
+            def switch(self, time, _, __, team):
+                self.catch_up(time)
+                self.team = team
+
+            def end(self, time, _, __, team):
+                self.catch_up(time)
+                self.team = Team.none
+
+        for player in self.players:
+            player.__caps_for__ = 0
+            player.__caps_against__ = 0
+            player.parse_events(CapDiffHandler(caps, player))
+
     def create_timeline(self, sort=False):
         """
         Return a timeline of events for all players in the match. Each event

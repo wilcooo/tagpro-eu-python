@@ -27,6 +27,33 @@ class Player(JsonObject):
         super().__init__(data, strict=strict)
 
         self.__stats__ = None
+        self.__caps_for__ = None
+        self.__caps_against__ = None
+
+    @property
+    def caps_for(self):
+        """
+        Return the number of captures done by the player's team.
+        """
+        if self.__caps_for__ is None:
+            self.__parent__.__compute_cap_diff__()
+        return self.__caps_for__
+
+    @property
+    def caps_against(self):
+        """
+        Return the number of captures done by the player's enemy's team.
+        """
+        if self.__caps_against__ is None:
+            self.__parent__.__compute_cap_diff__()
+        return self.__caps_against__
+
+    @property
+    def cap_diff(self):
+        """
+        Return caps_for - caps_against.
+        """
+        return self.caps_for - self.caps_against
 
     @property
     def team(self):
