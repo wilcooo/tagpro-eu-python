@@ -73,6 +73,8 @@ class Player(JsonObject):
         if self.__stats__ is None:
             handler = PlayerStats()
             self.parse_events(handler)
+            handler.caps_for = self.caps_for
+            handler.caps_against = self.caps_against
             self.__stats__ = handler
         return self.__stats__
 
@@ -338,6 +340,13 @@ class PlayerStats(PlayerEventHandler):
         self.block_since = -1
         self.pup_since = defaultdict(lambda: -1)
 
+        # these are supplied by the player object
+        self.caps_for = self.caps_against = 0
+
+    @property
+    def cap_diff(self):
+        return self.caps_for - self.caps_against
+
     @property
     def pups_total(self):
         """
@@ -350,7 +359,8 @@ class PlayerStats(PlayerEventHandler):
     def __add__(self, other):
         new = PlayerStats()
         keys = ['tags', 'pops', 'grabs', 'drops', 'hold', 'captures',
-                'returns', 'prevent', 'button', 'block', 'time']
+                'returns', 'prevent', 'button', 'block', 'time',
+                'caps_for', 'caps_against']
         pup_dicts = ['pups', 'pup_time']
 
         for k in keys:
