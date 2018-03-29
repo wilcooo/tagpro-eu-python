@@ -18,7 +18,9 @@ This package provides an easy interface for reading match files downloaded from 
 Installation
 ------------
 
-Install using pip: (TBA)
+Install using pip::
+
+  pip3 install tagpro-eu
 
 Install from source::
 
