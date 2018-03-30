@@ -1,5 +1,5 @@
 import datetime
-import json as _json
+import json
 
 from tagpro_eu.blob import Blob
 
@@ -62,7 +62,7 @@ class JsonObject:
         :raises TypeError: when strict mode is disabled and an element has the
         wrong data type
         """
-        return cls(_json.loads(s), strict=strict)
+        return cls(json.loads(s), strict=strict)
 
     @classmethod
     def from_file(cls, filename, strict=False):
@@ -78,7 +78,7 @@ class JsonObject:
         wrong data type
         """
         with open(filename) as f:
-            return cls(_json.load(f), strict=strict)
+            return cls(json.load(f), strict=strict)
 
     def __eq__(self, other):
         for f in self.__fields__.keys():

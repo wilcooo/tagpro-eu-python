@@ -1,24 +1,24 @@
-import tagpro_eu.json
+import tagpro_eu.data
 import tagpro_eu.match
 import unittest
 
 
-class JsonTestObject(tagpro_eu.json.JsonObject):
+class JsonTestObject(tagpro_eu.data.JsonObject):
     __fields__ = {
         'foo': int,
         '__bar__': int
     }
 
 
-class JsonTestObjectNested(tagpro_eu.json.JsonObject):
+class JsonTestObjectNested(tagpro_eu.data.JsonObject):
     __fields__ = {
         'inner': JsonTestObject
     }
 
 
-class JsonTestObjectWithList(tagpro_eu.json.JsonObject):
+class JsonTestObjectWithList(tagpro_eu.data.JsonObject):
     __fields__ = {
-        'list': tagpro_eu.json.ListOf(JsonTestObject)
+        'list': tagpro_eu.data.ListOf(JsonTestObject)
     }
 
 

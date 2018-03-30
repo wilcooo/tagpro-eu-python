@@ -1,6 +1,6 @@
 from tagpro_eu.blob import Blob
 from tagpro_eu.constants import Tile
-from tagpro_eu.json import JsonObject
+from tagpro_eu.data import JsonObject
 
 
 class Map(JsonObject):

@@ -4,8 +4,8 @@ import heapq
 
 from tagpro_eu.blob import Blob
 from tagpro_eu.constants import Team
-from tagpro_eu.json import JsonObject
-from tagpro_eu.json import ListOf
+from tagpro_eu.data import JsonObject
+from tagpro_eu.data import ListOf
 from tagpro_eu.map import Map
 from tagpro_eu.player import Player
 from tagpro_eu.player import PlayerEventHandler

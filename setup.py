@@ -11,10 +11,10 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='tagpro-eu',
-    version='1.0.1b1',
+    version='1.1.0b1',
     license='GPL-3.0',
 
-    packages=find_packages(),
+    packages=find_packages(exclude=['test', 'examples']),
 
     description='A Python parser for tagpro.eu matches',
     long_description=long_desc,
@@ -27,6 +27,8 @@ setup(
     python_requires='>=3.6',
 
     test_suite='test',
+
+    py_modules=['tagpro_eu'],
 
     classifiers=[
         'Development Status :: 4 - Beta',

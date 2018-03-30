@@ -5,8 +5,8 @@ This script will take two match links as input, and print a markdown results
 post, much like the ones seen on r/ELTP
 """
 
-from tagpro_eu.constants import Team
-from tagpro_eu.web import download_match
+from tagpro_eu import Team
+from tagpro_eu import download_match
 
 url1 = input('Half 1: ')
 url2 = input('Half 2: ')

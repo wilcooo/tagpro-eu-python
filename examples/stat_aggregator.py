@@ -5,8 +5,7 @@ Takes one or more TagPro Analytics matches through standard input, then prints
 a CSV file containing aggregated statistics for all players in those games.
 """
 
-import tagpro_eu.player
-import tagpro_eu.web
+import tagpro_eu
 
 import csv
 import sys

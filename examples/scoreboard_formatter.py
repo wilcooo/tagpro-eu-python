@@ -6,7 +6,7 @@ Can take a TagPro Analytics URL, ID, or raw data URL (such as raw pastebin or
 gist) as input.
 """
 
-import tagpro_eu.web
+import tagpro_eu
 import sys
 
 

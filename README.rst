@@ -18,9 +18,9 @@ This package provides an easy interface for reading match files downloaded from 
 Installation
 ------------
 
-Install using pip::
+Install using pip (python 3.6+)::
 
-  pip3 install tagpro-eu
+  pip install tagpro-eu
 
 Install from source::
 
@@ -36,7 +36,7 @@ Quick Start
 
 ::
 
-  >>> import tagpro_eu.web
+  >>> import tagpro_eu
 
 Download an online match with ID 1743331_. Instead of the ID, a match URL or raw data URL can also be given. ::
 
