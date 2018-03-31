@@ -13,15 +13,15 @@ import sys
 from collections import defaultdict
 
 
-links = []
-inp = input()
-while inp:
-    links.append(inp)
-    inp = input()
+links = sys.stdin.readlines()
 
 stats = defaultdict(tagpro_eu.player.PlayerStats)
 
-for link in links:
+for l in links:
+    link = l.strip()
+    if not link:
+        continue
+
     match = tagpro_eu.web.download_match(link)
     for player in match.players:
         stats[player.name] += player.stats
