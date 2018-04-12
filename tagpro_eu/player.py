@@ -367,8 +367,9 @@ class PlayerStats(PlayerEventHandler):
             setattr(new, k, getattr(self, k) + getattr(other, k))
 
         for k in pup_dicts:
-            for p in Powerup.enumerate():
-                getattr(new, k)[p] = getattr(self, k)[p] + getattr(other, k)[p]
+            for s in self, other:
+                for p, n in getattr(s, k).items():
+                    getattr(new, k)[p] += n
 
         return new
 

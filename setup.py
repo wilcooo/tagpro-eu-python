@@ -11,7 +11,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='tagpro-eu',
-    version='1.1.0b1',
+    version='1.1.1b1',
     license='GPL-3.0',
 
     packages=find_packages(exclude=['test', 'examples']),
