@@ -1,4 +1,4 @@
-from tagpro_eu.util import Time
+from tagpro_eu import Time
 import unittest
 
 

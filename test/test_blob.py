@@ -1,4 +1,4 @@
-from tagpro_eu.blob import Blob
+from tagpro_eu import Blob
 import base64
 import unittest
 

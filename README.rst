@@ -40,7 +40,7 @@ Quick Start
 
 Download an online match with ID 1743331_. Instead of the ID, a match URL or raw data URL can also be given. ::
 
-  >>> match = tagpro_eu.web.download_match(1743331)
+  >>> match = tagpro_eu.download_match(1743331)
   >>> match
   Match(server='tagpro-radius.koalabeast.com', port=8003)
 
