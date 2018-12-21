@@ -44,7 +44,7 @@ def download_match(url=None, id=None, raw_url=None):
             raw_url = url
 
     if id is not None:
-        raw_url = f'https://tagpro.eu/?download={id}'
+        raw_url = f'https://tagpro.eu/data/?match={id}'
 
     if raw_url is None:
         raise ValueError("No valid match ID or URL was given")
