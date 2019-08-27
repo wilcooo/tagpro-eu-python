@@ -1,4 +1,4 @@
-import json
+import json, ijson
 
 from tagpro_eu.map import Map
 from tagpro_eu.match import Match
@@ -21,14 +21,23 @@ def load_matches(f, maps=None):
     :param maps: the maps object (omit if undesired)
     :returns: the matches contained in the file
     """
-    data = json.load(f)
-    for k, v in data.items():
-        match = Match(v)
-        match.match_id = k
-        match.map_id = v['mapId']
-        if maps is not None:
-            match.map = maps[match.map_id]
-        yield match
+    parser = ijson.parse(f)
+    builder = ijson.ObjectBuilder()
+
+    next(parser)
+    match_id = next(parser)[2]
+
+    for prefix, event, value in parser:
+        if prefix: builder.event(event, value)
+        else:
+            match = Match(builder.value)
+            match.match_id = match_id
+            match.map_id = builder.value['mapId']
+            if maps is not None:
+                match.map = maps[match.map_id]
+            builder = ijson.ObjectBuilder()
+            match_id = value
+            yield match
 
 
 def load_maps(f):
